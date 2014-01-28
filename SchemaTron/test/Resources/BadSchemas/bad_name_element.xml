@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+    <rule context="someContext">
+
+      <!-- invalid element inside name in assert -->
+      <assert test="assertTest">
+        <name>
+          <fooElement />
+        </name>
+      </assert>
+
+      <!-- invalid element inside name in report -->
+      <report test="reportTest">
+        <name>
+          <barElement />
+        </name>
+      </report>
+
+    </rule>
+  </pattern>
+
+</schema>

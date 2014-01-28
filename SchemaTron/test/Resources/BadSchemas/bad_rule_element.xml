@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+
+    <!-- invalid value of the rule.@abstract attribute -->
+    <rule abstract="foo" />
+    <rule abstract="True" />
+    <rule abstract="False" />
+    <rule abstract="TRUE" />
+
+    <!-- missing rule.@context attribute at a non-abstract rule -->
+    <rule />
+
+    <!-- missing rule.@id attribute at an abstract rule -->
+    <rule abstract="true" />
+
+    <!-- abstract rule should not contain the rule.@context attribute -->
+    <rule abstract="true" id="abstractRule1" context="someContext" />
+
+    <!-- invalid element inside a rule -->
+    <rule context="someContext" >
+      <fooElement />
+    </rule>
+
+  </pattern>
+
+</schema>

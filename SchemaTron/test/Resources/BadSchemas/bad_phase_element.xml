@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <!-- missing phase.@id attribute -->
+  <phase />
+
+  <!-- invalid phase.@id attribute -->
+  <phase id="#ALL" />
+  <phase id="#DEFAULT" />
+
+  <!-- invalid element inside phase -->
+  <phase id="correctPhaseId">
+    <fooElement />
+  </phase>
+
+</schema>

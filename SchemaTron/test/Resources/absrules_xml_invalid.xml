@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<values id="1xxx">
+  <i>5.4</i>
+  <r>foo</r>
+  <e>not-empty</e>
+  <e>  </e>
+</values>

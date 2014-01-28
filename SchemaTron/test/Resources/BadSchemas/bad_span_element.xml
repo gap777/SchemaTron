@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <p>
+    <!-- missing span.@class attribute -->
+    <span />
+
+    <!-- invalid element inside span -->
+    <span class="spanClass">
+      <fooElement />
+    </span>
+  </p>
+
+</schema>

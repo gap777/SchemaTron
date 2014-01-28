@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1DD52070-30C2-432A-89D5-484432A9B8E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SchemaTron.Test</RootNamespace>
+    <AssemblyName>SchemaTron.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="xunit, Version=1.8.0.1545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lib\ThirdParty\xUnit-1.8\xunit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Functional\AbstractPatterns.cs" />
+    <Compile Include="Functional\AbstractRules.cs" />
+    <Compile Include="Functional\Basics.cs" />
+    <Compile Include="Functional\SchematronSchemaTest.cs" />
+    <Compile Include="Functional\Inclusions.cs" />
+    <Compile Include="Functional\Phases.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Provider.cs" />
+    <Compile Include="Unit\FileInclusionResolverTest.cs" />
+    <Compile Include="Unit\Preprocessing\PreprocessorTest.cs" />
+    <Compile Include="Unit\SyntaxModel\SchemaDeserializerTest.cs" />
+    <Compile Include="Unit\ValidationEvaluatorTest.cs" />
+    <Compile Include="Unit\ValidatorTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\abspatterns_sch.xml" />
+    <EmbeddedResource Include="Resources\abspatterns_xml.xml" />
+    <EmbeddedResource Include="Resources\abspatterns_xml_invalid.xml" />
+    <EmbeddedResource Include="Resources\absrules_sch.xml" />
+    <EmbeddedResource Include="Resources\absrules_xml.xml" />
+    <EmbeddedResource Include="Resources\absrules_xml_invalid.xml" />
+    <EmbeddedResource Include="Resources\basics_sch.xml" />
+    <EmbeddedResource Include="Resources\basics_xml.xml" />
+    <EmbeddedResource Include="Resources\basics_xml_invalid.xml" />
+    <EmbeddedResource Include="Resources\inclusions_sch.xml" />
+    <EmbeddedResource Include="Resources\inclusions_sch_soap.xml" />
+    <EmbeddedResource Include="Resources\inclusions_xml.xml" />
+    <EmbeddedResource Include="Resources\inclusions_xml_invalid.xml" />
+    <EmbeddedResource Include="Resources\phases_sch.xml" />
+    <EmbeddedResource Include="Resources\phases_xml.xml" />
+    <EmbeddedResource Include="Resources\phases_xml_invalid.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\SchemaTron.csproj">
+      <Project>{3095DD68-66F1-4DC9-AA60-564EF2FC1EE8}</Project>
+      <Name>SchemaTron</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_root.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_schema_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_ns_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_phase_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_active_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_pattern_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_param_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_diagnostic_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_diagnostics_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_rule_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_extends_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_assert_or_report_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_let_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_name_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_value-of_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_emph_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_p_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_span_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_title_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_id_reference.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_include_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GoodSchemas\good_name_element.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GoodSchemas\no_default_phase.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GoodSchemas\good_assert_or_report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\bad_xpath_expressions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GoodSchemas\good_ancillary_elements.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\infinite_recursion_include.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GoodSchemas\good_let.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GoodSchemas\good_diagnostics.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\BadSchemas\undefined_let.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

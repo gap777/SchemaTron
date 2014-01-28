@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- schema.@queryBinding has invalid value -->
+<schema xmlns="http://purl.oclc.org/dsdl/schematron" queryBinding="fooBinding">
+
+  <!-- schema contains multiple <diagnostics> elements -->
+  <diagnostics>
+  </diagnostics>
+
+  <diagnostics>
+  </diagnostics>
+
+  <!-- schema contains invalid element <fooElement> -->
+  <fooElement/>
+
+</schema>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+    <rule id="abstractRule1" abstract="true" />
+
+    <rule context="someContext">
+
+      <!-- missing extends.@rule attribute -->
+      <extends />
+
+      <!-- invalid element inside extends -->
+      <extends rule="abstractRule1">
+        <fooElement />
+      </extends>
+
+    </rule>
+  </pattern>
+
+</schema>

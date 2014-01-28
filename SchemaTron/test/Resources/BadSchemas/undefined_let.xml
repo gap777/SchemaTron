@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+  <pattern>
+    <rule context="someContext">
+      
+      <let name="existingLet" value="letValue" />
+      
+      <assert test="$existingLet">
+        <name />
+      </assert>
+      
+      <!-- reference to a non-existent variable (missing <let> definition) -->
+      <assert test="$nonExistentLet">
+        <name />
+      </assert>
+      
+    </rule>
+  </pattern>
+</schema>

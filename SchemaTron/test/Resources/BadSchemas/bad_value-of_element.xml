@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+    <rule context="someContext">
+
+      <assert test="assertTest">
+        <!-- missing value-of.@select attribute -->
+        <value-of />
+
+        <!-- invalid element inside value-of in assert -->
+        <value-of select="assertSelect">
+          <fooElement />
+        </value-of>
+      </assert>
+
+      <report test="reportTest">
+        <!-- missing value-of.@select attribute -->
+        <value-of />
+
+        <!-- invalid element inside value-of in report -->
+        <value-of select="reportSelect">
+          <barElement />
+        </value-of>
+      </report>
+
+    </rule>
+  </pattern>
+
+</schema>

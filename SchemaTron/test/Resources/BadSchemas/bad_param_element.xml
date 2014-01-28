@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern abstract="true" id ="abstractPattern1"/>
+  
+  <pattern is-a="abstractPattern1">
+    <!-- missing param.@name and param.@value attributes -->
+    <param />
+
+    <!-- invalid element inside param -->
+    <param name="paramName" value="paramValue">
+      <fooElement />
+    </param>
+  </pattern>
+
+</schema>

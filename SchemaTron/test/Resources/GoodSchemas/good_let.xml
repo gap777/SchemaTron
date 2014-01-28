@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <!-- variable definition in <schema> -->
+  <let name="schemaLet" value="schemaLetValue" />
+
+  <!-- reference to an existing variable -->
+  <let name="anotherLet" value="/$schemaLet/" />
+
+  <phase id="phase1">
+    <!-- variable definition in <phase> -->
+    <let name="phaseLet" value="phaseLetValue" />
+    <active pattern="activePattern" />
+  </phase>
+
+  <pattern id="activePattern">
+    <!-- variable definition in active <pattern> -->
+    <let name="activePatternLet" value="activePatternLetValue" />
+  </pattern>
+
+  <pattern>
+    <!-- variable definition in <pattern> -->
+    <let name="patternLet" value="patternLetValue" />
+
+    <rule context="someContext" id="ruleId">
+      <!-- variable definition in <rule> -->
+      <let name="ruleLet" value="ruleLetValue" />
+
+      <assert test="assertTest">
+        Hello world from an assert!
+        <name /> <name path="namePath"/>
+        <value-of select="." />
+      </assert>
+
+      <report test="reportTest">
+        Hello world from a report!
+        <name /> <name path="namePath"/>
+        <value-of select="." />
+      </report>
+
+    </rule>
+  </pattern>
+
+</schema>

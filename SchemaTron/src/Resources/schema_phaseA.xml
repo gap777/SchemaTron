@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+  <ns prefix="ms" uri="http://purl.oclc.org/dsdl/schematron"/>
+
+  <!--
+  NOTES:
+    - When modifying the assert/report messages, update corresponding expected
+      messages in SchematronSchemaTest.
+  -->
+  
+  <pattern id="include">
+    <rule context="ms:include">
+      <assert test="count(@href)=1">
+        The '<name/>' element must contain the 'href' attribute.
+      </assert>
+      <assert test="parent::ms:schema or parent::ms:phase or parent::ms:pattern or parent::ms:diagnostics or parent::ms:rule">
+        The '<name/>' element is only allowed to be inside the following elements: 'schema', 'phase', 'pattern', 'diagnostics' and 'rule'.
+      </assert>
+    </rule>
+    <rule context="ms:include/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'include' element.
+      </assert>
+    </rule>
+  </pattern>
+
+</schema>

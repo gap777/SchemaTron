@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+    <rule context="someContext">
+      
+    <!-- missing let.@name and let.@value attributes -->
+    <let />
+
+    <!-- invalid element inside let -->
+    <let name="letName" value="letValue">
+      <fooElement />
+    </let>
+
+    </rule>
+  </pattern>
+
+</schema>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron" defaultPhase="fooPhase">
+
+  <!-- non-unique phase id -->
+  <phase id="nonUniquePhase" />
+  <phase id="nonUniquePhase" />
+
+  <!-- non-unique namespace prefix -->
+  <ns prefix="nonUniqueNS" uri="http://www.w3.org/2001/12/soap-envelope" />
+  <ns prefix="nonUniqueNS" uri="http://www.w3schools.com/prices" />
+
+  <phase id="phase1">
+    <!-- reference to a non-existent pattern -->
+    <active pattern="nonExistentPattern" />
+  </phase>
+
+  <!-- non-unique pattern id -->
+  <pattern id="nonUniquePattern" />
+  <pattern id="nonUniquePattern" />
+
+  <!-- reference to a non-abstract pattern -->
+  <pattern id="nonAbstractPattern" abstract="false" />
+  <pattern is-a="nonAbstractPattern" />
+
+  <!-- reference to a non-existent abstract pattern -->
+  <pattern is-a="nonExistentAbstractPattern" />
+
+  <pattern id="abstractPattern" abstract="true" />
+  <pattern is-a="abstractPattern">
+    <param name="nonUniqueParam" value="paramValue1" />
+    <param name="nonUniqueParam" value="paramValue2" />
+  </pattern>
+
+  <pattern id="patternWithNonUniqueRules">
+    <rule context="someContext1" id="nonUniqueRule" />
+    <rule context="someContext2" id="nonUniqueRule" />
+  </pattern>
+
+  <pattern id="patternWithNonUniqueAssertions">
+    <rule context="someContext3">
+      <!-- non-unique assert id -->
+      <assert id="nonUniqueAssert" test="assertTest1" />
+      <assert id="nonUniqueAssert" test="assertTest2" />
+      <!-- non-unique report id -->
+      <report id="nonUniqueReport" test="reportTest1" />
+      <report id="nonUniqueReport" test="reportTest2" />
+    </rule>
+  </pattern>
+
+  <!-- non-unique let id -->
+  <let name="nonUniqueLet" value="letValue1" />
+  <let name="nonUniqueLet" value="letValue2" />
+
+  <diagnostics>
+    <!-- non-unique diagnostic id -->
+    <diagnostic id="nonUniqueDiagnostic"/>
+    <diagnostic id="nonUniqueDiagnostic"/>
+  </diagnostics>
+  
+  <pattern id="patternWithNonExistentDiagnostics">
+    <rule context="someContext4">
+      <!-- reference to a non-existent diagnostics from assert -->
+      <assert test="assertTest3" diagnostics="nonExistentAssertDiagnostics" />
+      <!-- reference to a non-existent diagnostics from report -->
+      <report test="reportTest3" diagnostics="nonExistentReportDiagnostics" />
+    </rule>
+  </pattern>
+</schema>

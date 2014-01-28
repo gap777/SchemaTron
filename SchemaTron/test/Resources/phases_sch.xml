@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron" defaultPhase="A" queryBinding="xpath">
+  
+  <phase id="A">
+    <active pattern="1"/>
+    <active pattern="2"/>
+  </phase>
+  <phase id="B">
+    <active pattern="3"/>
+  </phase>
+  
+  <pattern id="1">
+    <rule context="/">
+      <assert test="count(values)=1"/>
+    </rule>
+  </pattern>
+  <pattern id="2">
+    <rule context="/values">
+      <assert test="count(@id)=1"/>
+      <assert test="count(*)=count(i|r|e)"/>
+    </rule>
+  </pattern>
+  
+  <pattern id="3">
+    <rule id="integer" abstract="true">
+      <let name="num" value="number(.)"/>
+      <assert test="$num"/>
+      <assert test="floor($num)=ceiling($num)"/>
+    </rule>
+    <rule id="real" abstract="true">
+      <assert test="number(.)"/>
+    </rule>
+    <rule id="empty-string" abstract="true">
+      <assert test="string-length(normalize-space(.))=0"/>
+    </rule>
+    <rule context="/values/@id">
+      <extends rule="integer"/>
+    </rule>
+    <rule context="/values/i">
+      <extends rule="integer"/>
+    </rule>
+    <rule context="/values/r">
+      <extends rule="real"/>
+    </rule>
+    <rule context="/values/e">
+      <extends rule="empty-string"/>
+    </rule>
+  </pattern>
+</schema>

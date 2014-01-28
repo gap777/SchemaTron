@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <diagnostics>
+    <!-- invalid element inside diagnostics -->
+    <fooElement />
+  </diagnostics>
+
+</schema>

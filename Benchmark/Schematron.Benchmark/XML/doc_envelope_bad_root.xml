@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+SchemaTron can stop at the first assert, while XSLT would validate the whole
+document.
+-->
+<foo>
+  <soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope" soap:encodingStyle="http://www.w3.org/2001/12/soap-encoding">
+    <soap:Header/>
+    <soap:Body>
+      <m:GetPrice xmlns:m="http://www.w3schools.com/prices">
+        <m:Item id="1">Desc</m:Item>
+        <m:Item id="4">Desc</m:Item>
+        <m:Item id="3">Desc</m:Item>
+        <!-- SchemaTron with partial validation can stop here. -->
+        <!-- not unique @id -->
+        <m:Item id="4">Desc</m:Item>
+      </m:GetPrice>
+    </soap:Body>
+    <!-- not allowed -->
+    <soap:Transaction/>
+    <!-- not allowed -->
+    <soap:Item/>
+    <!-- not allowed -->
+    <Item/>
+  </soap:Envelope>
+</foo>

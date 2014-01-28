@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <!-- invalid XPath expressions -->
+
+  <pattern>
+    <rule context="/invalidXPath/rule/context[@">
+
+      <assert test="/invalidXPath/assert/test[@">
+
+        <name path="/invalidXPath/name/path[@" />
+
+        <value-of select="/invalidXPath/value-of/select[@" />
+
+      </assert>
+
+      <report test="/invalidXPath/report/test[@" />
+
+    </rule>
+  </pattern>
+
+</schema>

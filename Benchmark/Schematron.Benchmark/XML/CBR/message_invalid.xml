@@ -1,0 +1,9 @@
+<!-- invalid message -->
+<foo>
+  <message>
+    <item price="5"/>
+    <item price="10"/>
+    <item price="10"/>
+    <item price="9"/>
+  </message>
+</foo>

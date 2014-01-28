@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+  <pattern>
+    <rule id="integer" abstract="true">
+      <let name="num" value="number(.)"/>
+      <assert test="$num"/>
+      <assert test="floor($num)=ceiling($num)"/>
+    </rule>
+    <rule id="real" abstract="true">
+      <assert test="number(.)"/>
+    </rule>
+    <rule id="empty-string" abstract="true">
+      <assert test="string-length(normalize-space(.))=0"/>
+    </rule>
+    <rule context="/values/@id">
+      <extends rule="integer"/>
+    </rule>
+    <rule context="/values/i">
+      <extends rule="integer"/>
+    </rule>
+    <rule context="/values/r">
+      <extends rule="real"/>
+    </rule>
+    <rule context="/values/e">
+      <extends rule="empty-string"/>
+    </rule>
+  </pattern>
+</schema>

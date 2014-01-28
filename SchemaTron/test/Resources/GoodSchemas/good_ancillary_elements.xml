@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <title>Schema title</title>
+  
+  <pattern>
+    <p>
+      This is a paragraph of a text.
+      <emph>Empasized text.</emph>
+      <dir value="ltr">Left to right text direction.</dir>
+      <dir value="rtl">Right to left text direction.</dir>
+      <span class="spanClas">Span over some text with a class.</span>
+    </p>
+
+    <rule context="someContext" id="ruleId">
+      <let name="ruleLet" value="ruleLetValue" />
+
+      <assert test="assertTest">
+        Hello world from an assert!
+        <name /> <name path="namePath"/>
+        <value-of select="." />
+      </assert>
+
+      <report test="reportTest">
+        Hello world from a report!
+        <name /> <name path="namePath"/>
+        <value-of select="." />
+      </report>
+
+      <assert test="assertTest" id="assertWithId" />
+
+      <report test="reportTest" id="reportWithId" />
+
+    </rule>
+  </pattern>
+
+</schema>

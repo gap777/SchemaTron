@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pattern id="soapEnvelope" xmlns="http://purl.oclc.org/dsdl/schematron">
+  <rule id="r1" context="/">
+   <assert test="soap:Envelope"/>
+  </rule>
+  <rule id="r2" context="/soap:Envelope/@soap:encodingStyle">
+    <assert test=".='http://www.w3.org/2001/12/soap-encoding'">'<value-of select="."/>' is not valid.</assert>
+  </rule>
+  <rule id="r3" context="/soap:Envelope/soap:Header">
+    <assert test="following-sibling::*[1][self::soap:Body]"/>
+  </rule>
+  <rule id="r4" context="/soap:Envelope/soap:Body">
+    <assert test="true()"/>
+  </rule>
+  <rule id="r5" context="/soap:Envelope/*">
+    <assert test="false()">Element <name/> is not allowed.</assert>
+  </rule>
+</pattern>

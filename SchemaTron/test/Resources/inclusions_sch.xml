@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+  <ns prefix="soap" uri="http://www.w3.org/2001/12/soap-envelope" />
+  <ns prefix="app" uri="http://www.w3schools.com/prices" />
+
+  <include href="inclusions_sch_soap.xml"/>
+
+  <pattern id="soapBody">
+    <rule id="r1" context="/soap:Envelope/soap:Body">
+      <assert test="count(app:GetPrice)=1"/>
+    </rule>
+    <rule id="r2" context="/soap:Envelope/soap:Body/app:GetPrice">
+      <assert id="a1" test="count(app:Item)>0"/>
+      <assert id="a2" test="10>count(app:Item)"/>
+    </rule>
+    <rule id="r3" context="/soap:Envelope/soap:Body/app:GetPrice/app:Item">
+      <assert test="count(@id)=1"/>
+    </rule>
+    <rule id="r4" context="/soap:Envelope/soap:Body/app:GetPrice/app:Item/@id">
+      <assert id="a1" test="number(.)"/>
+      <assert id="a2" test="not(.=../preceding-sibling::app:Item/@id)">Attribute <name/>='<value-of select="."/>' must be unique.</assert>
+    </rule>
+  </pattern>
+
+</schema>

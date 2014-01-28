@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+  <ns prefix="ms" uri="http://purl.oclc.org/dsdl/schematron"/>
+
+  <!--
+  NOTES:
+    - When modifying the assert/report messages, update corresponding expected
+      messages in SchematronSchemaTest.
+    - These rules are the same as some of those in schema_phaseB.xml.
+      Those are applied in the last phase of validation after abstract
+      patterns, abstract rules, phases and diagnostics are resolved.
+  -->
+
+  <pattern id="ID_IDREF">
+    <rule context="ms:let/@name">
+      <assert test="not(.=../preceding-sibling::ms:let/@name)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/@id">
+      <assert test="not(.=../preceding-sibling::ms:pattern/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/@id">
+      <assert test="not(.=../preceding-sibling::ms:rule/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/@id|/ms:schema/ms:pattern/ms:rule/ms:report/@id">
+      <assert test="not(.=../preceding-sibling::ms:assert/@id) and not(.=../preceding-sibling::ms:report/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+  </pattern>
+</schema>

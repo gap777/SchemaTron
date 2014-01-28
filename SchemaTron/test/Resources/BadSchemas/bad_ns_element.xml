@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <!-- missing ns.@prefix and ns.@uri attributes -->
+  <ns />
+
+  <!-- missing ns.@prefix -->
+  <ns uri="http://www.w3schools.com/prices" />
+
+  <!-- ns.@uri attributes -->
+  <ns prefix="nsPrefix" />
+
+  <!--
+  - duplicate ns.@prefix or ns.@uri attributes:
+    - directly throws System.Xml.XmlException when loading the XDocument:
+      "'prefix' is a duplicate attribute name."
+  -->
+  <!--
+  <ns prefix="app" uri="http://www.w3schools.com/prices"
+    prefix="soap" uri="http://www.w3.org/2001/12/soap-envelope" />
+  -->
+
+  <!-- invalid element inside ns -->
+  <ns prefix="app" uri="http://www.w3schools.com/prices">
+    <fooElement />
+  </ns>
+
+</schema>

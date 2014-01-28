@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+ <pattern>
+  <rule context="/">
+   <assert test="message"/>
+  </rule>
+  <rule context="/message">
+   <assert test="count(*)=count(item)"/>
+  </rule>
+  <rule context="/message/item">
+   <assert test="count(@price)=1"/>
+  </rule>
+ </pattern>
+
+ <!-- soucet hodnot atributu price je v intervalu (10;20) --> 
+ <pattern>
+  <rule context="/message">
+   <assert test="20>sum(item/@price) and sum(item/@price)>10"/>
+  </rule>  
+ </pattern>
+  
+</schema> 

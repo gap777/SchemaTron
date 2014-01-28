@@ -1,0 +1,7 @@
+<!-- soucet @price je 7, takze bude vybrano 1. pravidlo -->
+<message>
+ <item price="1"/>
+ <item price="2"/>
+ <item price="3"/>
+ <item price="1"/>
+</message>

@@ -1,0 +1,6 @@
+<cbr>
+ <predicate id="predicate 1 ... (0;10)" schematron-path="XML\CBR\predicate_1.xml"/> 
+ <predicate id="predicate 2 ... (10;20)" schematron-path="XML\CBR\predicate_2.xml"/> 
+ <predicate id="predicate 3 ... (20;30)" schematron-path="XML\CBR\predicate_3.xml"/>
+ <predicate id="predicate 4 ... (30;40)" schematron-path="XML\CBR\predicate_4.xml"/>
+</cbr>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <diagnostics>
+    <diagnostic id="diagnostic1">
+      A further diagnostic message.
+    </diagnostic>
+  </diagnostics>
+
+  <pattern>
+    <rule context="someContext">
+      <assert test="assertTest1" diagnostics="diagnostic1">
+        Assert message.
+      </assert>
+      <report test="reportTest1" diagnostics="diagnostic1">
+        Report message.
+      </report>
+    </rule>
+  </pattern>
+
+</schema>

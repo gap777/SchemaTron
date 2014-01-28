@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+    <rule context="someContext">
+
+      <!-- missing assert.@test attribute -->
+      <assert />
+
+      <!-- invalid element inside assert -->
+      <assert test="assertTest">
+        <fooElement />
+      </assert>
+
+      <!-- missing report.@test attribute -->
+      <report />
+
+      <!-- invalid element inside report -->
+      <report test="reportTest">
+        <barElement />
+      </report>
+
+    </rule>
+  </pattern>
+
+</schema>

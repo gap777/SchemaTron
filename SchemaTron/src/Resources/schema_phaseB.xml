@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+  <ns prefix="ms" uri="http://purl.oclc.org/dsdl/schematron"/>
+
+  <!--
+ 
+  TODO:
+  - Use <let> for simplifying rule contexts (similar to config_schema.xml in DaemonNT).
+  - Messages regarding invalid attribute values could contain also the name
+    of the element. This could also go to a diagnostic, but a message without
+    the element name is quite worthless.
+  - there is no rule specific for the <dir> element
+  - test missing schema.@xmlns attribute (?)
+ 
+  NOTES:
+  - When modifying the assert/report messages, update corresponding expected
+    messages in SchematronSchemaTest.
+  - Element names and attribute values ar case-sensitive.
+    
+  -->
+
+  <pattern id="root">
+    <rule context="/">
+      <assert test="ms:schema">Only 'schema' can be used as the root element.</assert>
+    </rule>
+  </pattern>
+
+  <pattern id="schema">
+    <rule context="/ms:schema">
+      <assert test="count(ms:diagnostics)=0 or count(ms:diagnostics)=1">
+        The '<name/>' element must contain at most one 'diagnostics' element.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:title">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:ns">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:p">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:let">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:phase">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'schema' element.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/@queryBinding">
+      <assert test=".='xpath'">
+        The value of the '<name/>' attribute ('<value-of select="."/>') is not valid.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="ns">
+    <rule context="/ms:schema/ms:ns">
+      <assert test="count(@prefix)=1">
+        The '<name/>' element must contain the 'prefix' attribute.
+      </assert>
+      <assert test="count(@uri)=1">
+        The '<name/>' element must contain the 'uri' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:ns/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'ns' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="phase">
+    <rule context="/ms:schema/ms:phase">
+      <assert test="count(@id)=1">
+        The '<name/>' element must contain the 'id' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:phase/@id">
+      <assert test=".!='#ALL' and .!='#DEFAULT'">
+        The value of the '<name/>' attribute ('<value-of select="."/>') is not valid.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:p">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:let">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:active">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'phase' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="active">
+    <rule context="/ms:schema/ms:phase/ms:active">
+      <assert test="count(@pattern)=1">
+        The '<name/>' element must contain the 'pattern' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:active/ms:dir">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:active/ms:emph">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:active/ms:span">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:active/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'active' element.
+      </assert>
+    </rule>
+  </pattern>
+   
+  <pattern id="pattern">
+    <rule context="/ms:schema/ms:pattern[@is-a]/@abstract">
+      <assert test=".!='true'">
+        The value of the '<name/>' attribute ('<value-of select="."/>') is not valid. The pattern cannot be simultaneously abstract and instance of an abstract pattern.
+      </assert>
+    </rule> 
+    <rule context="/ms:schema/ms:pattern/@abstract">
+      <assert test=".='true' or .='false'">
+        The value of the '<name/>' attribute ('<value-of select="."/>') is not valid.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[not(@is-a) and @abstract='true']">
+      <assert test="count(@id)=1">
+        An abstract '<name/>' element must contain the 'id' attribute.
+      </assert>
+    </rule>   
+    <rule context="/ms:schema/ms:pattern/ms:title">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:p">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[not(@is-a)]/ms:let">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[not(@is-a)]/ms:rule">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[@is-a]/ms:param">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[@is-a]/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the instance 'pattern' element.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[not(@is-a)]/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the non-instance 'pattern' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="param">
+    <rule context="/ms:schema/ms:pattern[@is-a]/ms:param">
+      <assert test="count(@name)=1">
+        The '<name/>' element must contain the 'name' attribute.
+      </assert>
+      <assert test="count(@value)=1">
+        The '<name/>' element must contain the 'value' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[@is-a]/ms:param/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'param' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="diagnostic">
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic">
+      <assert test="count(@id)=1">
+        The '<name/>' element must contain the 'id' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic/ms:value-of">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic/ms:emph">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic/ms:dir">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic/ms:span">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'diagnostic' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="diagnostics">
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'diagnostics' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="rule">
+    <rule context="/ms:schema/ms:pattern/ms:rule/@abstract">
+      <assert test=".='true' or .='false'">
+        The value of the '<name/>' attribute ('<value-of select="."/>') is not valid.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule[not(@abstract='true')]">
+      <assert test="count(@context)=1">
+        The non-abstract '<name/>' element must contain the 'context' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule">
+      <assert test="count(@context)=0">
+        The abstract '<name/>' element must not contain the 'context' attribute.
+      </assert>
+      <assert test="count(@id)=1">
+        The abstract '<name/>' element must contain the 'id' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:let">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:report">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:extends">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'rule' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="extends">
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:extends">
+      <assert test="count(@rule)=1">
+        The '<name/>' element must contain the 'rule' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:extends/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'extends' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="assertion">
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert|/ms:schema/ms:pattern/ms:rule/ms:report">
+      <assert test="count(@test)=1">
+        The '<name/>' element must contain the 'test' attribute.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/ms:name|/ms:schema/ms:pattern/ms:rule/ms:report/ms:name">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/ms:value-of|/ms:schema/ms:pattern/ms:rule/ms:report/ms:value-of">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/ms:emph|/ms:schema/ms:pattern/ms:rule/ms:report/ms:emph">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/ms:dir|/ms:schema/ms:pattern/ms:rule/ms:report/ms:dir">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/ms:span|/ms:schema/ms:pattern/ms:rule/ms:report/ms:span">
+      <assert test="true()"/>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/ms:*|/ms:schema/ms:pattern/ms:rule/ms:report/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'assert' or 'report' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="let">
+    <rule context="ms:let">
+      <assert test="count(@name)=1">
+        The '<name/>' element must contain the 'name' attribute.
+      </assert>
+      <assert test="count(@value)=1">
+        The '<name/>' element must contain the 'value' attribute.
+      </assert>
+    </rule>
+    <rule context="ms:let/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'let' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="name">
+    <rule context="ms:name/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'name' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="value-of">
+    <rule context="ms:value-of">
+      <assert test="count(@select)=1">
+        The '<name/>' element must contain the 'select' attribute.
+      </assert>
+    </rule>
+    <rule context="ms:value-of/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'value-of' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="emph">
+    <rule context="ms:emph/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'emph' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="p">
+    <rule context="ms:p/ms:dir">
+      <assert test="true()"/>
+    </rule>
+    <rule context="ms:p/ms:emph">
+      <assert test="true()"/>
+    </rule>
+    <rule context="ms:p/ms:span">
+      <assert test="true()"/>
+    </rule>
+    <rule context="ms:p/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'p' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="span">
+    <rule context="ms:span">
+      <assert test="count(@class)=1">
+        The '<name/>' element must contain the 'class' attribute.
+      </assert>
+    </rule>
+    <rule context="ms:span/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'span' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="title">
+    <rule context="ms:title/ms:dir">
+      <assert test="true()"/>
+    </rule>
+    <rule context="ms:title/ms:*">
+      <assert test="false()">
+        The '<name/>' element is not allowed inside the 'title' element.
+      </assert>
+    </rule>
+  </pattern>
+
+  <pattern id="ID_IDREF">
+    <rule context="/ms:schema/@defaultPhase">
+      <assert test=".=../ms:phase/@id">
+        The value of the '<name/>' attribute ('<value-of select="."/>') does not reference any phase.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:ns/@prefix">
+      <assert test="not(.=../preceding-sibling::ms:ns/@prefix)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:phase/@id">
+      <assert test="not(.=../preceding-sibling::ms:phase/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:phase/ms:active/@pattern">
+      <assert test=".=../../../ms:pattern[not(@abstract='true')]/@id">
+        The value of the '<name/>' attribute ('<value-of select="."/>') does not reference any non-abstract pattern.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/@id">
+      <assert test="not(.=../preceding-sibling::ms:pattern/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[@is-a]/@is-a">
+      <assert test=".=../../ms:pattern[@abstract='true']/@id">
+        The value of the '<name/>' attribute ('<value-of select="."/>') does not reference any abstract pattern.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern[@is-a]/ms:param/@name">
+      <assert test="not(.=../preceding-sibling::ms:param/@name)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/@id">
+      <assert test="not(.=../preceding-sibling::ms:rule/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:extends/@rule">
+      <assert test=".=../../../ms:rule[@abstract='true']/@id">
+        The value of the '<name/>' attribute ('<value-of select="."/>') does not reference any abstract rule.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/@id|/ms:schema/ms:pattern/ms:rule/ms:report/@id">
+      <assert test="not(.=../preceding-sibling::ms:assert/@id) and not(.=../preceding-sibling::ms:report/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="ms:let/@name">
+      <assert test="not(.=../preceding-sibling::ms:let/@name)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:diagnostics/ms:diagnostic/@id">
+      <assert test="not(.=../preceding-sibling::ms:diagnostic/@id)">
+        The value of the '<name/>' attribute ('<value-of select="."/>') must be unique.
+      </assert>
+    </rule>
+    <rule context="/ms:schema/ms:pattern/ms:rule/ms:assert/@diagnostics|/ms:schema/ms:pattern/ms:rule/ms:report/@diagnostics">
+      <assert test=".=../../../../ms:diagnostics/ms:diagnostic/@id">
+        The value of the '<name/>' attribute ('<value-of select="."/>') does not reference any diagnostic.
+      </assert>
+    </rule>
+  </pattern>
+</schema>

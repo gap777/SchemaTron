@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+    <rule context="someContext">
+
+      <!--
+      name element:
+      - without path attribute
+        - diagnostic should contain 'name()'
+      - with empty path attribute
+        - diagnostic should contain 'name()'
+      - with non-empty path attribute
+        - diagnostic should contain 'name(/some/path)'
+      -->
+      <assert test="assertTest">
+        Lorem <name /> ipsum <name path="" /> dolor
+        sit <name path="/some/path" /> amet.
+      </assert>
+
+    </rule>
+  </pattern>
+
+</schema>

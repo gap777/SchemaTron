@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <diagnostics>
+    <!-- missing diagnostic.@id attribute -->
+    <diagnostic />
+
+    <!-- invalid element inside diagnostic -->
+    <diagnostic id="correctDiagnosticId">
+      <fooElement />
+    </diagnostic>
+  </diagnostics>
+
+</schema>

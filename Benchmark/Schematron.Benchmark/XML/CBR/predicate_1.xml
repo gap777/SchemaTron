@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+ <!-- rozpoznani struktury message muze uzivatel umistit do samostatneho souboru -->
+ <pattern>
+  <rule context="/">
+   <assert test="message"/>
+  </rule>
+  <rule context="/message">
+   <assert test="count(*)=count(item)"/>
+  </rule>
+  <rule context="/message/item">
+   <assert test="count(@price)=1"/>
+  </rule>
+ </pattern>
+
+ <!-- soucet hodnot atributu price je v intervalu (0;10) --> 
+ <pattern>
+  <rule context="/message">
+   <assert test="10>sum(item/@price) and sum(item/@price)>0"/>
+  </rule>  
+ </pattern>
+  
+</schema> 

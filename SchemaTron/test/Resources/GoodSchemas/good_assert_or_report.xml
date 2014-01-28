@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <pattern>
+    <rule context="someContext" id="ruleId">
+
+      <assert test="assertTest">
+        Hello world from an assert!
+        <name /> <name path="namePath"/>
+        <value-of select="." />
+      </assert>
+
+      <report test="reportTest">
+        Hello world from a report!
+        <name /> <name path="namePath"/>
+        <value-of select="." />
+      </report>
+
+      <assert test="assertTest" id="assertWithId" />
+
+      <report test="reportTest" id="reportWithId" />
+
+    </rule>
+  </pattern>
+
+</schema>

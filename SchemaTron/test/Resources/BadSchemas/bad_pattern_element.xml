@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+
+  <!-- invalid value of the pattern.@abstract attribute -->
+  <pattern abstract="foo" />
+  <pattern abstract="True" />
+  <pattern abstract="False" />
+  <pattern abstract="TRUE" />
+
+  <!-- missing pattern.@id attribute at an abstract pattern -->
+  <pattern abstract="true" />
+
+  <pattern abstract="true" id="abstractPattern1"/>
+  <!-- pattern which tries to be both abstract an instance -->
+  <pattern is-a="abstractPattern1" abstract="true" />
+
+  <!-- invalid elements inside an instance pattern -->
+  <pattern is-a="abstractPattern1">
+    <let name="letName" value="letValue" />
+    <rule context="" />
+  </pattern>
+
+  <!-- invalid element inside a non-instance pattern -->
+  <pattern>
+    <param name="paramName" value="paramValue" />
+  </pattern>
+
+</schema>
