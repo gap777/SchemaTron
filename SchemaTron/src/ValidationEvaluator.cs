@@ -5,6 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SchemaTron.SyntaxModel;
+using Wmhelp.XPath2;
 
 namespace SchemaTron
 {
@@ -80,25 +81,29 @@ namespace SchemaTron
 
         private void ValidateRule(Pattern pattern, Rule rule)
         {
-            XPathNodeIterator contextSet = this.xNavigator.Select(rule.CompiledContext);
+            XPath2NodeIterator contextSet = this.xNavigator.XPath2Select(rule.CompiledContext);
 
             while (contextSet.MoveNext())
             {
-                XPathNavigator contextNode = contextSet.Current;
-
-                if (!this.IsContextUsed(contextNode))
+                XPathItem current = contextSet.Current;
+                if (current is IXPathNavigable)
                 {
-                    foreach (Assert assert in rule.Asserts)
+                    XPathNavigator contextNode = current as XPathNavigator;
+                    if (!this.IsContextUsed(contextNode))
                     {
-                        this.ValidateAssert(pattern, rule, assert, contextNode);
-
-                        if (this.isCanceled)
+                        foreach (Assert assert in rule.Asserts)
                         {
-                            break;
+                            this.ValidateAssert(pattern, rule, assert, contextNode);
+
+                            if (this.isCanceled)
+                            {
+                                break;
+                            }
                         }
+
+                        this.usedContext.Add(contextNode.Clone());
                     }
 
-                    this.usedContext.Add(contextNode.Clone());
                 }
 
                 if (this.isCanceled)
@@ -124,26 +129,26 @@ namespace SchemaTron
         private void ValidateAssert(Pattern pattern, Rule rule, Assert assert, XPathNavigator context)
         {
             // evaluate test
-            object objResult = context.Evaluate(assert.CompiledTest);
+            object objResult = context.XPath2Evaluate(assert.CompiledTest);
 
             // resolve object result
             bool isViolated = false;
             switch (assert.CompiledTest.ReturnType)
             {
-                case XPathResultType.Boolean:
+                case XPath2ResultType.Boolean:
                     {
                         isViolated = !Convert.ToBoolean(objResult);
                         break;
                     }
-                case XPathResultType.Number:
+                case XPath2ResultType.Number:
                     {
                         double value = Convert.ToDouble(objResult);
                         isViolated = double.IsNaN(value);
                         break;
                     }
-                case XPathResultType.NodeSet:
+                case XPath2ResultType.NodeSet:
                     {
-                        XPathNodeIterator iterator = (XPathNodeIterator)objResult;
+                        XPath2NodeIterator iterator = (XPath2NodeIterator)objResult;
                         isViolated = (iterator.Count == 0);
                         break;
                     }
@@ -189,27 +194,27 @@ namespace SchemaTron
             {
                 List<string> diagValues = new List<string>();
 
-                foreach (XPathExpression xpeDiag in assert.CompiledDiagnostics)
+                foreach (XPath2Expression xpeDiag in assert.CompiledDiagnostics)
                 {
-                    object objDiagResult = context.Evaluate(xpeDiag);
+                    object objDiagResult = context.XPath2Evaluate(xpeDiag);
 
                     // resolve diag result object
                     switch (xpeDiag.ReturnType)
                     {
-                        case XPathResultType.Number:
-                        case XPathResultType.String:
+                        case XPath2ResultType.Number:
+                        case XPath2ResultType.String:
                             {
                                 diagValues.Add(objDiagResult.ToString());
                                 break;
                             }
-                        case XPathResultType.Boolean:
+                        case XPath2ResultType.Boolean:
                             {
                                 diagValues.Add(objDiagResult.ToString().ToLower());
                                 break;
                             }
-                        case XPathResultType.NodeSet:
+                        case XPath2ResultType.NodeSet:
                             {
-                                XPathNodeIterator iterator = (XPathNodeIterator)objDiagResult;
+                                XPath2NodeIterator iterator = (XPath2NodeIterator)objDiagResult;
                                 if (iterator.Count > 0)
                                 {
                                     foreach (var x in iterator)

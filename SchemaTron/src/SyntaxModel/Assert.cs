@@ -1,4 +1,5 @@
-﻿using System.Xml.XPath;
+﻿
+using Wmhelp.XPath2;
 
 namespace SchemaTron.SyntaxModel
 {
@@ -13,7 +14,7 @@ namespace SchemaTron.SyntaxModel
 
         public string Test { get; set; }
 
-        public XPathExpression CompiledTest { get; set; }
+        public XPath2Expression CompiledTest { get; set; }
 
         public string Message { get; set; }
        
@@ -21,6 +22,6 @@ namespace SchemaTron.SyntaxModel
 
         public string[] Diagnostics { get; set; }
 
-        public XPathExpression[] CompiledDiagnostics { get; set; }
+        public XPath2Expression[] CompiledDiagnostics { get; set; }
     }
 }

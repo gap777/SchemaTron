@@ -21,6 +21,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using SchemaTron.Preprocessing;
 using SchemaTron.SyntaxModel;
+using Wmhelp.XPath2;
 
 namespace SchemaTron
 {
@@ -203,7 +204,7 @@ namespace SchemaTron
             }
 
             ValidatorSettings valArgs = new ValidatorSettings();
-            valArgs.Preprocessing = false;
+            valArgs.Preprocessing = false;            
 
             // validation - phaseA
             XDocument xPhaseA = Resources.Provider.SchemaPhaseA;
@@ -280,7 +281,7 @@ namespace SchemaTron
 
                     try
                     {
-                        rule.CompiledContext = System.Xml.XPath.XPathExpression.Compile(context, nsManager);
+                        rule.CompiledContext = XPath2Expression.Compile(context, nsManager);
                     }
                     catch (XPathException e)
                     {
@@ -292,7 +293,7 @@ namespace SchemaTron
                     {
                         try
                         {
-                            assert.CompiledTest = System.Xml.XPath.XPathExpression.Compile(assert.Test, nsManager);
+                            assert.CompiledTest = XPath2Expression.Compile(assert.Test, nsManager);
                         }
                         catch (XPathException e)
                         {
@@ -302,15 +303,15 @@ namespace SchemaTron
                         // compile diagnostics
                         if (assert.Diagnostics.Length > 0)
                         {
-                            assert.CompiledDiagnostics = new XPathExpression[assert.Diagnostics.Length];
+                            assert.CompiledDiagnostics = new XPath2Expression[assert.Diagnostics.Length];
                             for (int i = 0; i < assert.Diagnostics.Length; i++)
                             {
                                 string diag = assert.Diagnostics[i];
                                 try
                                 {
-                                    assert.CompiledDiagnostics[i] = XPathExpression.Compile(diag);
+                                    assert.CompiledDiagnostics[i] = XPath2Expression.Compile(diag);
                                 }
-                                catch (XPathException e)
+                                catch (XPath2Exception e)
                                 {
                                     if (assert.DiagnosticsIsValueOf[i])
                                     {

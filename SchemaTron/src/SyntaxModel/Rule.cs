@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Xml.XPath;
+using Wmhelp.XPath2;
+
 
 namespace SchemaTron.SyntaxModel
 {
@@ -12,7 +13,7 @@ namespace SchemaTron.SyntaxModel
 
         public string Context { get; set; }
 
-        public XPathExpression CompiledContext { get; set; }
+        public XPath2Expression CompiledContext { get; set; }
 
         public IEnumerable<Assert> Asserts { get; set; }
     }
