@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 
 using SchemaTron;
@@ -74,7 +75,10 @@ namespace SchemaTron.Console
 
         private XDocument LoadXDocument(string fileName)
         {
-            return XDocument.Load(fileName, LoadOptions.SetLineInfo);
+            var settings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse };
+            XmlReader reader = XmlReader.Create(fileName, settings);
+            XDocument data = XDocument.Load(reader, LoadOptions.SetLineInfo);
+            return data;
         }
 
         private Validator CreateValidator(string phase, XDocument schema)
@@ -165,6 +169,7 @@ Rule context: {6}",
             phase = arguments.FirstOrDefault((arg) => arg.StartsWith("--phase="));
             if (phase != null)
             {
+                arguments.Remove(phase);
                 phase = phase.Replace("--phase=", "");
             }
 
