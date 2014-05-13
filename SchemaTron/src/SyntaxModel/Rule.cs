@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Xml.XPath;
+using System.Linq;
+using XmlPrime;
 
 namespace SchemaTron.SyntaxModel
 {
@@ -12,8 +13,13 @@ namespace SchemaTron.SyntaxModel
 
         public string Context { get; set; }
 
-        public XPathExpression CompiledContext { get; set; }
+        public XPath CompiledContext { get; set; }
 
         public IEnumerable<Assert> Asserts { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0} asserts about {1}", Asserts.Count(), Context);
+        }
     }
 }

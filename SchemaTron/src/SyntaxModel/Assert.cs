@@ -1,4 +1,5 @@
 ﻿using System.Xml.XPath;
+using XmlPrime;
 
 namespace SchemaTron.SyntaxModel
 {
@@ -13,7 +14,7 @@ namespace SchemaTron.SyntaxModel
 
         public string Test { get; set; }
 
-        public XPathExpression CompiledTest { get; set; }
+        public XPath CompiledTest { get; set; }
 
         public string Message { get; set; }
        
@@ -21,6 +22,18 @@ namespace SchemaTron.SyntaxModel
 
         public string[] Diagnostics { get; set; }
 
-        public XPathExpression[] CompiledDiagnostics { get; set; }
+        public XPath[] CompiledDiagnostics { get; set; }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(Id))
+            {
+                return string.Format("{0}", Test);
+            }
+            else
+            {
+                return string.Format("{0} ({1})", Id, Test);                
+            }
+        }
     }
 }

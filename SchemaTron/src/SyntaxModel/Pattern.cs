@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SchemaTron.SyntaxModel
 {
@@ -10,5 +11,10 @@ namespace SchemaTron.SyntaxModel
         public string Id { get; set; }
 
         public IEnumerable<Rule> Rules { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0} ({1} rules)", Id, Rules.Count());
+        }
     }
 }

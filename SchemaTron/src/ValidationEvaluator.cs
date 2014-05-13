@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using System.Xml.XPath;
 using SchemaTron.SyntaxModel;
+
+using XmlPrime;
 
 namespace SchemaTron
 {
@@ -80,12 +85,11 @@ namespace SchemaTron
 
         private void ValidateRule(Pattern pattern, Rule rule)
         {
-            XPathNodeIterator contextSet = this.xNavigator.Select(rule.CompiledContext);
-
-            while (contextSet.MoveNext())
+            IEnumerable<XPathItem> contextSet = rule.CompiledContext.Evaluate(xNavigator);
+            foreach (XPathItem nextItem in contextSet)
             {
-                XPathNavigator contextNode = contextSet.Current;
-
+                // assume that context resolves to a node, not to a value or function. 
+                XPathNavigator contextNode = nextItem as XPathNavigator;
                 if (!this.IsContextUsed(contextNode))
                 {
                     foreach (Assert assert in rule.Asserts)
@@ -124,33 +128,32 @@ namespace SchemaTron
         private void ValidateAssert(Pattern pattern, Rule rule, Assert assert, XPathNavigator context)
         {
             // evaluate test
-            object objResult = context.Evaluate(assert.CompiledTest);
+            IEnumerable<int> dummy = new[] {1, 2, 3};
+            List<int> dummyList = dummy.ToList();
+
+            XPathItem objResult = assert.CompiledTest.EvaluateToItem(context);
 
             // resolve object result
             bool isViolated = false;
-            switch (assert.CompiledTest.ReturnType)
+            if (assert.CompiledTest.StaticType.TypeCode.IsNumber())
             {
-                case XPathResultType.Boolean:
-                    {
-                        isViolated = !Convert.ToBoolean(objResult);
-                        break;
-                    }
-                case XPathResultType.Number:
-                    {
-                        double value = Convert.ToDouble(objResult);
-                        isViolated = double.IsNaN(value);
-                        break;
-                    }
-                case XPathResultType.NodeSet:
-                    {
-                        XPathNodeIterator iterator = (XPathNodeIterator)objResult;
-                        isViolated = (iterator.Count == 0);
-                        break;
-                    }
-                default:
-                    throw new InvalidOperationException(String.Format("'{0}'.", assert.Test));
+                double value = objResult.ValueAsDouble;
+                isViolated = double.IsNaN(value);
             }
-
+            else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Boolean)
+            {
+                isViolated = !objResult.ValueAsBoolean;
+            }
+            else if (objResult is XPathNavigator)
+            {
+                //assert.CompiledTest.StaticType == XdmType.Empty ?
+                isViolated = (objResult as XPathNavigator).IsEmptyElement;
+            }                              
+            else
+            {
+                throw new InvalidOperationException(String.Format("'{0}'.", assert.Test));
+            }
+            
             // results
             if (isViolated)
             {
@@ -189,44 +192,35 @@ namespace SchemaTron
             {
                 List<string> diagValues = new List<string>();
 
-                foreach (XPathExpression xpeDiag in assert.CompiledDiagnostics)
+                foreach (XPath xpeDiag in assert.CompiledDiagnostics)
                 {
-                    object objDiagResult = context.Evaluate(xpeDiag);
-
-                    // resolve diag result object
-                    switch (xpeDiag.ReturnType)
+                    IEnumerable<XPathItem> objDiagResults = xpeDiag.Evaluate(context);
+                                        
+                    if (xpeDiag.StaticType.TypeCode == XmlTypeCode.String ||
+                        xpeDiag.StaticType.TypeCode.IsNumber())
                     {
-                        case XPathResultType.Number:
-                        case XPathResultType.String:
-                            {
-                                diagValues.Add(objDiagResult.ToString());
-                                break;
-                            }
-                        case XPathResultType.Boolean:
-                            {
-                                diagValues.Add(objDiagResult.ToString().ToLower());
-                                break;
-                            }
-                        case XPathResultType.NodeSet:
-                            {
-                                XPathNodeIterator iterator = (XPathNodeIterator)objDiagResult;
-                                if (iterator.Count > 0)
-                                {
-                                    foreach (var x in iterator)
-                                    {
-                                        diagValues.Add(x.ToString());
-                                        break;
-                                    }
-                                }
-                                else
-                                {
-                                    diagValues.Add(string.Empty);
-                                }
-                                break;
-                            }
-                        default:
-                            diagValues.Add(string.Empty);
-                            break;
+                        diagValues.Add(objDiagResults.First().Value);
+                    }
+                    else if (xpeDiag.StaticType.TypeCode == XmlTypeCode.Boolean)
+                    {
+                        diagValues.Add(objDiagResults.First().Value.ToLower());
+                        break;
+                    }
+                    else if (!objDiagResults.Any())
+                    {
+                        diagValues.Add(string.Empty);
+                    }
+                    else if (objDiagResults.First() is XPathNavigator)
+                    {
+                        foreach (XPathNavigator navResult in objDiagResults)
+                        {
+                            diagValues.Add(navResult.Value);
+                        }
+                        break;
+                    }
+                    else
+                    {
+                       diagValues.Add(string.Empty); 
                     }
                 }
 
@@ -273,6 +267,37 @@ namespace SchemaTron
             }
 
             return sb.ToString();
+        }
+    }
+
+    public static class SchematronExtensions
+    {
+        public static bool IsNumber(this XmlTypeCode typeCode)
+        {
+            bool rval = false;
+            switch (typeCode)
+            {
+                case XmlTypeCode.Decimal:
+                case XmlTypeCode.Double:
+                case XmlTypeCode.Float:
+                case XmlTypeCode.Int:
+                case XmlTypeCode.Integer:
+                case XmlTypeCode.Long:
+                case XmlTypeCode.NegativeInteger:
+                case XmlTypeCode.NonNegativeInteger:
+                case XmlTypeCode.NonPositiveInteger:
+                case XmlTypeCode.PositiveInteger:
+                case XmlTypeCode.Short:
+                case XmlTypeCode.UnsignedInt:
+                case XmlTypeCode.UnsignedLong:
+                case XmlTypeCode.UnsignedShort:
+                    rval = true;
+                    break;
+                default:
+                    rval = false;
+                    break;
+            }
+            return rval;
         }
     }
 }

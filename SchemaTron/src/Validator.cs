@@ -21,6 +21,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using SchemaTron.Preprocessing;
 using SchemaTron.SyntaxModel;
+using XmlPrime;
 
 namespace SchemaTron
 {
@@ -259,7 +260,8 @@ namespace SchemaTron
             List<string> messages = new List<string>();
 
             // resolve namespaces
-            XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
+            NameTable theTable = new NameTable();
+            XmlNamespaceManager nsManager = new XmlNamespaceManager(theTable);
             foreach (Namespace ns in schema.Namespaces)
             {
                 nsManager.AddNamespace(ns.Prefix, ns.Uri);
@@ -280,11 +282,11 @@ namespace SchemaTron
 
                     try
                     {
-                        rule.CompiledContext = System.Xml.XPath.XPathExpression.Compile(context, nsManager);
+                        rule.CompiledContext = XPath.Compile(context, theTable, nsManager);
                     }
                     catch (XPathException e)
                     {
-                        messages.Add(String.Format("Invalid XPath 1.0 context='{0}': {1}", rule.Context, e.Message));
+                        messages.Add(String.Format("Invalid XPath 2.0 context='{0}': {1}", rule.Context, e.Message));
                     }
 
                     // compile tests
@@ -292,23 +294,23 @@ namespace SchemaTron
                     {
                         try
                         {
-                            assert.CompiledTest = System.Xml.XPath.XPathExpression.Compile(assert.Test, nsManager);
+                            assert.CompiledTest = XPath.Compile(assert.Test, theTable, nsManager);
                         }
                         catch (XPathException e)
                         {
-                            messages.Add(String.Format("Invalid XPath 1.0 test='{0}': {1}", assert.Test, e.Message));
+                            messages.Add(String.Format("Invalid XPath 2.0 test='{0}': {1}", assert.Test, e.Message));
                         }
 
                         // compile diagnostics
                         if (assert.Diagnostics.Length > 0)
                         {
-                            assert.CompiledDiagnostics = new XPathExpression[assert.Diagnostics.Length];
+                            assert.CompiledDiagnostics = new XPath[assert.Diagnostics.Length];
                             for (int i = 0; i < assert.Diagnostics.Length; i++)
                             {
                                 string diag = assert.Diagnostics[i];
                                 try
                                 {
-                                    assert.CompiledDiagnostics[i] = XPathExpression.Compile(diag);
+                                    assert.CompiledDiagnostics[i] = XPath.Compile(diag);
                                 }
                                 catch (XPathException e)
                                 {

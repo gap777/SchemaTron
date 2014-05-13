@@ -58,7 +58,7 @@
       </assert>
     </rule>
     <rule context="/ms:schema/@queryBinding">
-      <assert test=".='xpath'">
+      <assert test=".='xpath' or .='xpath2' or .='xslt2'">
         The value of the '<name/>' attribute ('<value-of select="."/>') is not valid.
       </assert>
     </rule>
