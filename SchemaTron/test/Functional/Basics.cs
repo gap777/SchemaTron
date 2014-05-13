@@ -1,4 +1,10 @@
-﻿namespace SchemaTron.Test.Functional
+﻿using System.Collections.Generic;
+using System.Xml;
+using System.Xml.XPath;
+using SchemaTron.SyntaxModel;
+using XmlPrime;
+
+namespace SchemaTron.Test.Functional
 {
     using System.Xml.Linq;
     using SchemaTron;
@@ -28,6 +34,52 @@
             ValidatorResults results = validator.Validate(xIn, true);
 
             Assert.False(results.IsValid);
+        }
+
+        [Fact]
+        public void StupidXmlPrimeBug()
+        {
+            NameTable theTable = new NameTable();
+            XmlNamespaceManager nsManager = new XmlNamespaceManager(theTable);
+            nsManager.AddNamespace("m", "http://www.w3schools.com/prices");
+            nsManager.AddNamespace("soap", "http://www.w3.org/2001/12/soap-envelope");
+            XPath compiledXpathFindingItem = XPath.Compile("//m:Item", theTable, nsManager);
+            XPath compiledXpathComparingIdAttrValue = XPath.Compile("@id > 0", theTable, nsManager);
+
+            XDocument xIn = Resources.Provider.LoadXmlDocument("basics_xml.xml");
+            XPathNavigator navigator = xIn.CreateNavigator();
+            IEnumerable<XPathItem> results = compiledXpathFindingItem.Evaluate(navigator);
+            foreach (XPathItem item in results)
+            {
+                XPathNavigator itemNav = item as XPathNavigator;
+                XPathItem comparisonResult = compiledXpathComparingIdAttrValue.EvaluateToItem(itemNav);
+                Assert.True(comparisonResult.ValueAsBoolean);
+            }
+
+        }
+
+        [Fact]
+        public void StupidXmlPrimeBugWorkaround()
+        {
+            NameTable theTable = new NameTable();
+            XmlNamespaceManager nsManager = new XmlNamespaceManager(theTable);
+            nsManager.AddNamespace("m", "http://www.w3schools.com/prices");
+            nsManager.AddNamespace("soap", "http://www.w3.org/2001/12/soap-envelope");
+            XPath compiledXpathFindingItem = XPath.Compile("//m:Item", theTable, nsManager);
+            XPath compiledXpathComparingIdAttrValue = XPath.Compile("@id > 0", theTable, nsManager);
+
+            XDocument xIn = Resources.Provider.LoadXmlDocument("basics_xml.xml");
+
+            XdmDocument betterIn = new XdmDocument(xIn.CreateReader());
+            XPathNavigator navigator = betterIn.CreateNavigator();
+            IEnumerable<XPathItem> results = compiledXpathFindingItem.Evaluate(navigator);
+            foreach (XPathItem item in results)
+            {
+                XPathNavigator itemNav = item as XPathNavigator;
+                XPathItem comparisonResult = compiledXpathComparingIdAttrValue.EvaluateToItem(itemNav);
+                Assert.True(comparisonResult.ValueAsBoolean);
+            }
+
         }
     }
 }

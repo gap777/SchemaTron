@@ -115,7 +115,7 @@
         {
             XDocument xSchema = Resources.Provider.LoadXmlDocument(BASIC_SCHEMA);
             Validator validator = Validator.Create(xSchema);
-            Assert.Throws<ArgumentNullException>(() => validator.Validate(null, true));
+            Assert.Throws<ArgumentNullException>(() => validator.Validate(null as XDocument, true));
         }
 
         [Fact]

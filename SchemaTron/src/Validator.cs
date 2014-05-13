@@ -209,7 +209,10 @@ namespace SchemaTron
             // validation - phaseA
             XDocument xPhaseA = Resources.Provider.SchemaPhaseA;
             Validator validatorPhaseA = Validator.Create(xPhaseA, valArgs);
-            ValidatorResults resultsA = validatorPhaseA.Validate(xSchema, true);
+
+            XdmDocument schemaToTest = new XdmDocument(xSchema.CreateReader());            
+
+            ValidatorResults resultsA = validatorPhaseA.Validate(schemaToTest.CreateNavigator(), true);
             if (!resultsA.IsValid)
             {
                 throw new SyntaxException(resultsA.GetMessages());
@@ -220,7 +223,11 @@ namespace SchemaTron
             // validation - phaseB
             XDocument xPhaseB = Resources.Provider.SchemaPhaseB;
             Validator validatorPhaseB = Validator.Create(xPhaseB, valArgs);
-            ValidatorResults resultsB = validatorPhaseB.Validate(xSchema, true);
+
+            // ResolveInclusions could have modified xSchema -- update XdmDocument obj 
+            schemaToTest = new XdmDocument(xSchema.CreateReader());
+
+            ValidatorResults resultsB = validatorPhaseB.Validate(schemaToTest.CreateNavigator(), true);
             if (!resultsB.IsValid)
             {
                 throw new SyntaxException(resultsB.GetMessages());
@@ -234,7 +241,10 @@ namespace SchemaTron
             // validation - phaseC 
             XDocument xPhaseC = Resources.Provider.SchemaPhaseC;
             Validator validatorPhaseC = Validator.Create(xPhaseC, valArgs);
-            ValidatorResults resultsC = validatorPhaseC.Validate(xSchema, true);
+            // last preprocessor stpes could have modified xSchema -- update XdmDocument obj 
+            schemaToTest = new XdmDocument(xSchema.CreateReader());
+
+            ValidatorResults resultsC = validatorPhaseC.Validate(schemaToTest.CreateNavigator(), true);
             if (!resultsC.IsValid)
             {
                 throw new SyntaxException(resultsC.GetMessages());
@@ -284,6 +294,10 @@ namespace SchemaTron
                     {
                         rule.CompiledContext = XPath.Compile(context, theTable, nsManager);
                     }
+                    catch (XdmException e)
+                    {
+                        messages.Add(String.Format("Invalid XPath 2.0 context='{0}': {1}", rule.Context, e.Message));                        
+                    }
                     catch (XPathException e)
                     {
                         messages.Add(String.Format("Invalid XPath 2.0 context='{0}': {1}", rule.Context, e.Message));
@@ -295,6 +309,10 @@ namespace SchemaTron
                         try
                         {
                             assert.CompiledTest = XPath.Compile(assert.Test, theTable, nsManager);
+                        }
+                        catch (XdmException e)
+                        {
+                            messages.Add(String.Format("Invalid XPath 2.0 test='{0}': {1}", assert.Test, e.Message));
                         }
                         catch (XPathException e)
                         {
@@ -312,15 +330,26 @@ namespace SchemaTron
                                 {
                                     assert.CompiledDiagnostics[i] = XPath.Compile(diag);
                                 }
+                                catch (XdmException e)
+                                {
+                                    if (assert.DiagnosticsIsValueOf[i])
+                                    {
+                                        messages.Add(String.Format("Invalid XPath 2.0 select='{0}': {1}", diag, e.Message));
+                                    }
+                                    else
+                                    {
+                                        messages.Add(String.Format("Invalid XPath 2.0 path='{0}']: {1}", diag, e.Message));
+                                    }
+                                }
                                 catch (XPathException e)
                                 {
                                     if (assert.DiagnosticsIsValueOf[i])
                                     {
-                                        messages.Add(String.Format("Invalid XPath 1.0 select='{0}': {1}", diag, e.Message));
+                                        messages.Add(String.Format("Invalid XPath 2.0 select='{0}': {1}", diag, e.Message));
                                     }
                                     else
                                     {
-                                        messages.Add(String.Format("Invalid XPath 1.0 path='{0}']: {1}", diag, e.Message));
+                                        messages.Add(String.Format("Invalid XPath 2.0 path='{0}']: {1}", diag, e.Message));
                                     }
                                 }
                             }
@@ -352,13 +381,25 @@ namespace SchemaTron
         /// </param>
         /// <returns>Detailed validation results.</returns>
         /// <exception cref="ArgumentNullException">If xDocument is null.</exception>
-        public ValidatorResults Validate(XDocument xDocument, bool fullValidation)
+        public ValidatorResults Validate(XPathNavigator navigator, bool fullValidation)
         {
-            if (xDocument == null)
+            if (navigator == null)
             {
-                throw new ArgumentNullException("xDocument - XML document instance");
+                throw new ArgumentNullException("navigator");
             }
-            ValidationEvaluator evaluator = new ValidationEvaluator(this.schema, xDocument, fullValidation);
+            ValidationEvaluator evaluator = new ValidationEvaluator(this.schema, navigator, fullValidation);
+            return evaluator.Evaluate();
+        }
+
+        public ValidatorResults Validate(XDocument aDoc, bool fullValidation)
+        {
+            if (aDoc == null)
+            {
+                throw new ArgumentNullException("aDoc");
+            }
+            // workaround for XmlPrime 
+            XdmDocument xmlprimeDoc = new XdmDocument(aDoc.CreateReader());
+            ValidationEvaluator evaluator = new ValidationEvaluator(this.schema, xmlprimeDoc.CreateNavigator(), fullValidation);
             return evaluator.Evaluate();
         }
     }

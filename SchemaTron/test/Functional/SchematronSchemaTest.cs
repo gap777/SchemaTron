@@ -284,11 +284,11 @@ namespace SchemaTron.Test.Functional
             // bad value-of.@select
             // bad name.@path
             TestBadSchema(GetBadFile("bad_xpath_expressions.xml"), new string[] {
-                "Invalid XPath 1.0 context='/invalidXPath/rule/context[@': Expression must evaluate to a node-set.",
-                "Invalid XPath 1.0 test='/invalidXPath/assert/test[@': Expression must evaluate to a node-set.",
-                "Invalid XPath 1.0 path='name(/invalidXPath/name/path[@)']: Expression must evaluate to a node-set.",
-                "Invalid XPath 1.0 select='/invalidXPath/value-of/select[@': Expression must evaluate to a node-set.",
-                "Invalid XPath 1.0 test='not(/invalidXPath/report/test[@)': Expression must evaluate to a node-set.",
+                "Invalid XPath 2.0 context='/invalidXPath/rule/context[@': Syntax error.  Expected qualified name, NCName but found end of input.",
+                "Invalid XPath 2.0 test='/invalidXPath/assert/test[@': Syntax error.  Expected qualified name, NCName but found end of input.",
+                "Invalid XPath 2.0 path='name(/invalidXPath/name/path[@)']: Syntax error.  Expected qualified name, NCName but found ')'.",
+                "Invalid XPath 2.0 select='/invalidXPath/value-of/select[@': Syntax error.  Expected qualified name, NCName but found end of input.",
+                "Invalid XPath 2.0 test='not(/invalidXPath/report/test[@)': Syntax error.  Expected qualified name, NCName but found ')'.",
             });
         }
 
@@ -301,7 +301,7 @@ namespace SchemaTron.Test.Functional
         {
             TestBadSchema(GetBadFile("undefined_let.xml"), new string[] {
                 // NOTE: Notice the odd XPath message for using an undefined variable.
-                "Invalid XPath 1.0 test='$nonExistentLet': XsltContext is needed for this query because of an unknown function.",
+                "Invalid XPath 2.0 test='$nonExistentLet': The variable '$nonExistentLet' is not defined or is out of scope.",
             });
         }
 

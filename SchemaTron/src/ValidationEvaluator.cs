@@ -23,7 +23,6 @@ namespace SchemaTron
     internal sealed class ValidationEvaluator
     {
         private Schema schema = null;
-        private XDocument xInstance = null;
         private bool fullValidation;
         private XPathNavigator xNavigator = null;
         private List<XPathNavigator> usedContext = new List<XPathNavigator>();
@@ -40,12 +39,11 @@ namespace SchemaTron
         /// <param name="fullValidation">Indicates whether to validate the
         /// whole document regardless of any assertion, or to stop validation at
         /// the first assertion.</param>
-        public ValidationEvaluator(Schema schema, XDocument xInstance, bool fullValidation)
+        public ValidationEvaluator(Schema schema, XPathNavigator aNavigator, bool fullValidation)
         {
             this.schema = schema;
-            this.xInstance = xInstance;
             this.fullValidation = fullValidation;
-            this.xNavigator = xInstance.CreateNavigator();
+            this.xNavigator = aNavigator;
         }
 
         /// <summary>
@@ -102,7 +100,7 @@ namespace SchemaTron
                         }
                     }
 
-                    this.usedContext.Add(contextNode.Clone());
+                    this.usedContext.Add(contextNode.Clone());   
                 }
 
                 if (this.isCanceled)
@@ -127,27 +125,26 @@ namespace SchemaTron
 
         private void ValidateAssert(Pattern pattern, Rule rule, Assert assert, XPathNavigator context)
         {
-            // evaluate test
-            IEnumerable<int> dummy = new[] {1, 2, 3};
-            List<int> dummyList = dummy.ToList();
-
-            XPathItem objResult = assert.CompiledTest.EvaluateToItem(context);
-
+            
+            
             // resolve object result
             bool isViolated = false;
             if (assert.CompiledTest.StaticType.TypeCode.IsNumber())
             {
+                XPathItem objResult = assert.CompiledTest.EvaluateToItem(context);
                 double value = objResult.ValueAsDouble;
                 isViolated = double.IsNaN(value);
             }
             else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Boolean)
             {
+                XPathItem objResult = assert.CompiledTest.EvaluateToItem(context);
                 isViolated = !objResult.ValueAsBoolean;
             }
-            else if (objResult is XPathNavigator)
+            else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Element ||
+                     assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Node)
             {
-                //assert.CompiledTest.StaticType == XdmType.Empty ?
-                isViolated = (objResult as XPathNavigator).IsEmptyElement;
+                IEnumerable<XPathItem> objResults = assert.CompiledTest.Evaluate(context);
+                isViolated = !objResults.Any();
             }                              
             else
             {
