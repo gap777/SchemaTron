@@ -27,6 +27,7 @@ namespace SchemaTron
         private XPathNavigator xNavigator = null;
         private List<XPathNavigator> usedContext = new List<XPathNavigator>();
         private ValidatorResults results = new ValidatorResults();
+        private DocumentSet cachedDocuments;
         private bool isCanceled = false;
 
         /// <summary>
@@ -44,6 +45,12 @@ namespace SchemaTron
             this.schema = schema;
             this.fullValidation = fullValidation;
             this.xNavigator = aNavigator;
+            XmlNameTable nameTable = new NameTable();
+            XmlReaderSettings readerSettings = new XmlReaderSettings();
+            readerSettings.NameTable = nameTable;
+            readerSettings.XmlResolver = new XmlUrlResolver();
+            IDocumentResolver documentResolver = new XmlReaderDocumentResolver(readerSettings);
+            cachedDocuments = new DocumentSet(nameTable, documentResolver, null, null);
         }
 
         /// <summary>
@@ -83,7 +90,13 @@ namespace SchemaTron
 
         private void ValidateRule(Pattern pattern, Rule rule)
         {
-            IEnumerable<XPathItem> contextSet = rule.CompiledContext.Evaluate(xNavigator);
+            DynamicContextSettings settings = new DynamicContextSettings
+            {
+                ContextItem = xNavigator,
+                DocumentSet = cachedDocuments
+            };
+
+            IEnumerable<XPathItem> contextSet = rule.CompiledContext.Evaluate(settings);
             foreach (XPathItem nextItem in contextSet)
             {
                 // assume that context resolves to a node, not to a value or function. 
@@ -124,58 +137,75 @@ namespace SchemaTron
         }
 
         private void ValidateAssert(Pattern pattern, Rule rule, Assert assert, XPathNavigator context)
-        {            
-            // resolve object result
-            bool isViolated = false;
-            if (assert.CompiledTest.StaticType.TypeCode.IsNumber())
+        {
+            try
             {
-                XPathItem objResult = assert.CompiledTest.EvaluateToItem(context);
-                double value = objResult.ValueAsDouble;
-                isViolated = double.IsNaN(value);
-            }
-            else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Boolean)
-            {
-                XPathItem objResult = assert.CompiledTest.EvaluateToItem(context);
-                isViolated = !objResult.ValueAsBoolean;
-            }
-            else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Element ||
-                     assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Node ||
-                     assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Attribute)
-            {
-                IEnumerable<XPathItem> objResults = assert.CompiledTest.Evaluate(context);
-                isViolated = !objResults.Any();
-            }                              
-            else
-            {
-                throw new InvalidOperationException(String.Format("'{0}'.", assert.Test));
-            }
-            
-            // results
-            if (isViolated)
-            {
-                if (!this.fullValidation)
+                DynamicContextSettings settings = new DynamicContextSettings
                 {
-                    this.isCanceled = true;
+                    ContextItem = context,
+                    DocumentSet = cachedDocuments
+                };
+                // resolve object result
+                bool isViolated = false;
+                if (assert.CompiledTest.StaticType.TypeCode.IsNumber())
+                {
+                    XPathItem objResult = assert.CompiledTest.EvaluateToItem(settings);
+                    double value = objResult.ValueAsDouble;
+                    isViolated = double.IsNaN(value);
+                }
+                else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Boolean)
+                {
+                    XPathItem objResult = assert.CompiledTest.EvaluateToItem(settings);
+                    isViolated = !objResult.ValueAsBoolean;
+                }
+                else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Element ||
+                         assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Node ||
+                         assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Attribute)
+                {
+                    IEnumerable<XPathItem> objResults = assert.CompiledTest.Evaluate(settings);
+                    isViolated = !objResults.Any();
+                }
+                else
+                {
+                    throw new InvalidOperationException(String.Format("'{0}'.", assert.Test));
                 }
 
-                this.results.IsValid = false;
+                // results
+                if (isViolated)
+                {
+                    if (!this.fullValidation)
+                    {
+                        this.isCanceled = true;
+                    }
 
-                AssertionInfo info = new AssertionInfo();
-                info.IsReport = assert.IsReport;
-                info.PatternId = pattern.Id;
-                info.RuleId = rule.Id;
-                info.RuleContext = rule.Context;
-                info.AssertionId = assert.Id;
-                info.AssertionTest = assert.Test;
-                info.UserMessage = CreateUserMessage(assert, context);
-                info.Location = CreateLocation(context);
+                    this.results.IsValid = false;
 
-                IXmlLineInfo lineInfo = (IXmlLineInfo)context;
-                info.LineNumber = lineInfo.LineNumber;
-                info.LinePosition = lineInfo.LinePosition;
+                    AssertionInfo info = new AssertionInfo();
+                    info.IsReport = assert.IsReport;
+                    info.PatternId = pattern.Id;
+                    info.RuleId = rule.Id;
+                    info.RuleContext = rule.Context;
+                    info.AssertionId = assert.Id;
+                    info.AssertionTest = assert.Test;
+                    info.UserMessage = CreateUserMessage(assert, context);
+                    info.Location = CreateLocation(context);
 
-                this.results.ViolatedAssertionsList.Add(info);
+                    IXmlLineInfo lineInfo = (IXmlLineInfo)context;
+                    info.LineNumber = lineInfo.LineNumber;
+                    info.LinePosition = lineInfo.LinePosition;
+
+                    this.results.ViolatedAssertionsList.Add(info);
+                }
             }
+            catch (XdmException e)
+            {
+                e.Data["pattern"] = pattern.ToString();
+                e.Data["rule"] = rule.ToString();
+                e.Data["assert"] = assert.ToString();
+                throw;
+            }
+                
+            
         }
 
         private string CreateUserMessage(Assert assert, XPathNavigator context)
@@ -187,18 +217,23 @@ namespace SchemaTron
             else
             {
                 List<string> diagValues = new List<string>();
+                DynamicContextSettings settings = new DynamicContextSettings
+                {
+                    ContextItem = xNavigator,
+                    DocumentSet = cachedDocuments
+                };
 
                 foreach (XPath xpeDiag in assert.CompiledDiagnostics)
                 {
                     if (xpeDiag.StaticType.TypeCode == XmlTypeCode.String ||
                         xpeDiag.StaticType.TypeCode.IsNumber())
                     {
-                        XPathItem objDiagResult = xpeDiag.EvaluateToItem(context);
+                        XPathItem objDiagResult = xpeDiag.EvaluateToItem(settings);
                         diagValues.Add(objDiagResult.Value);
                     }
                     else if (xpeDiag.StaticType.TypeCode == XmlTypeCode.Boolean)
                     {
-                        XPathItem objDiagResult = xpeDiag.EvaluateToItem(context);
+                        XPathItem objDiagResult = xpeDiag.EvaluateToItem(settings);
                         diagValues.Add(objDiagResult.Value.ToLower());
                         break;
                     }
@@ -207,7 +242,7 @@ namespace SchemaTron
                              xpeDiag.StaticType.TypeCode == XmlTypeCode.Item ||
                              xpeDiag.StaticType.TypeCode == XmlTypeCode.Attribute)
                     {
-                        IEnumerable<XPathItem> objDiagResults = xpeDiag.Evaluate(context);
+                        IEnumerable<XPathItem> objDiagResults = xpeDiag.Evaluate(settings);
                         if (objDiagResults.Any())
                         {
                             foreach (XPathNavigator navResult in objDiagResults)

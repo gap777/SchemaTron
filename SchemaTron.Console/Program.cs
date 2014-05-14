@@ -35,9 +35,24 @@ namespace SchemaTron.Console
             {
                 program.Run(args);
             }
+            catch (SyntaxException ex)
+            {
+                foreach (string msg in ex.UserMessages)
+                {
+                    System.Console.Error.WriteLine();
+                    System.Console.Error.WriteLine(">>>> Syntax Error:");
+                    System.Console.Error.WriteLine(msg);                    
+                }
+            }
             catch (Exception ex)
             {
-                System.Console.Error.WriteLine("Error: " + ex.Message);
+                System.Console.Error.WriteLine(">>>> Runtime Error: " + ex.Message);
+                System.Console.Error.WriteLine("at: " + ex.StackTrace);
+                if (ex.Data.Contains("pattern"))
+                {
+                    System.Console.Error.WriteLine("while processing\n\tpattern {0}\n\trule {1}\n\tassertion {2}",
+                        ex.Data["pattern"], ex.Data["rule"], ex.Data["assert"]);                    
+                }
             }
         }
 
