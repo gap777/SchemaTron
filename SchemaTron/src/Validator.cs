@@ -278,8 +278,11 @@ namespace SchemaTron
                 nsManager.AddNamespace(ns.Prefix, ns.Uri);
             }
             XPathSettings compilationSettings = new XPathSettings(nameTable, nsManager);
-            XQuerySettings qs = new XQuerySettings(nameTable);
             compilationSettings.ImportModule(XdmModule.XsltFunctions);
+            compilationSettings.ImportModule(XdmModule.MsXslFunctions);
+            compilationSettings.ImportModule(XdmModule.ExtensionFunctions);
+            compilationSettings.ImportModule(XdmModule.XQuery30Functions);
+            compilationSettings.ImportModule(XdmModule.XPathMathFunctions);
 
             // compile XPath expressions
             foreach (Pattern pattern in schema.Patterns)
@@ -332,7 +335,7 @@ namespace SchemaTron
                                 string diag = assert.Diagnostics[i];
                                 try
                                 {
-                                    assert.CompiledDiagnostics[i] = XPath.Compile(diag);
+                                    assert.CompiledDiagnostics[i] = XPath.Compile(diag, compilationSettings);
                                 }
                                 catch (XdmException e)
                                 {

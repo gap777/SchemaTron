@@ -124,9 +124,7 @@ namespace SchemaTron
         }
 
         private void ValidateAssert(Pattern pattern, Rule rule, Assert assert, XPathNavigator context)
-        {
-            
-            
+        {            
             // resolve object result
             bool isViolated = false;
             if (assert.CompiledTest.StaticType.TypeCode.IsNumber())
@@ -141,7 +139,8 @@ namespace SchemaTron
                 isViolated = !objResult.ValueAsBoolean;
             }
             else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Element ||
-                     assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Node)
+                     assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Node ||
+                     assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Attribute)
             {
                 IEnumerable<XPathItem> objResults = assert.CompiledTest.Evaluate(context);
                 isViolated = !objResults.Any();
@@ -205,7 +204,8 @@ namespace SchemaTron
                     }
                     else if (xpeDiag.StaticType.TypeCode == XmlTypeCode.Element ||
                              xpeDiag.StaticType.TypeCode == XmlTypeCode.Node ||
-                             xpeDiag.StaticType.TypeCode == XmlTypeCode.Item)
+                             xpeDiag.StaticType.TypeCode == XmlTypeCode.Item ||
+                             xpeDiag.StaticType.TypeCode == XmlTypeCode.Attribute)
                     {
                         IEnumerable<XPathItem> objDiagResults = xpeDiag.Evaluate(context);
                         if (objDiagResults.Any())

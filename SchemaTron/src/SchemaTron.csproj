@@ -46,10 +46,7 @@
     <Reference Include="XmlPrime, Version=2.9.1.17521, Culture=neutral, PublicKeyToken=191a7149cbddb6bd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\XmlPrime.dll</HintPath>
-    </Reference>
-    <Reference Include="XmlPrime.ExtensionMethods, Version=2.9.0.17527, Culture=neutral, PublicKeyToken=d06102150f5123f2, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\XmlPrime.ExtensionMethods.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
