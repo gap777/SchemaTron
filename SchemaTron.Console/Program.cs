@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -48,6 +49,8 @@ namespace SchemaTron.Console
             {
                 System.Console.WriteLine("Loading schema: " + schemaFileName);
             }
+            //string schemaFileDir = Path.GetDirectoryName(schemaFileName);
+            //Directory.SetCurrentDirectory(schemaFileDir);
             XDocument schema = LoadXDocument(schemaFileName);
 
             Validator validator = CreateValidator(phase, schema);

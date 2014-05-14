@@ -241,6 +241,7 @@ namespace SchemaTron
             // validation - phaseC 
             XDocument xPhaseC = Resources.Provider.SchemaPhaseC;
             Validator validatorPhaseC = Validator.Create(xPhaseC, valArgs);
+
             // last preprocessor stpes could have modified xSchema -- update XdmDocument obj 
             schemaToTest = new XdmDocument(xSchema.CreateReader());
 
@@ -270,12 +271,15 @@ namespace SchemaTron
             List<string> messages = new List<string>();
 
             // resolve namespaces
-            NameTable theTable = new NameTable();
-            XmlNamespaceManager nsManager = new XmlNamespaceManager(theTable);
+            NameTable nameTable = new NameTable();
+            XmlNamespaceManager nsManager = new XmlNamespaceManager(nameTable);
             foreach (Namespace ns in schema.Namespaces)
             {
                 nsManager.AddNamespace(ns.Prefix, ns.Uri);
             }
+            XPathSettings compilationSettings = new XPathSettings(nameTable, nsManager);
+            XQuerySettings qs = new XQuerySettings(nameTable);
+            compilationSettings.ImportModule(XdmModule.XsltFunctions);
 
             // compile XPath expressions
             foreach (Pattern pattern in schema.Patterns)
@@ -292,7 +296,7 @@ namespace SchemaTron
 
                     try
                     {
-                        rule.CompiledContext = XPath.Compile(context, theTable, nsManager);
+                        rule.CompiledContext = XPath.Compile(context, compilationSettings);
                     }
                     catch (XdmException e)
                     {
@@ -308,7 +312,7 @@ namespace SchemaTron
                     {
                         try
                         {
-                            assert.CompiledTest = XPath.Compile(assert.Test, theTable, nsManager);
+                            assert.CompiledTest = XPath.Compile(assert.Test, compilationSettings);
                         }
                         catch (XdmException e)
                         {

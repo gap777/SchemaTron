@@ -191,33 +191,38 @@ namespace SchemaTron
 
                 foreach (XPath xpeDiag in assert.CompiledDiagnostics)
                 {
-                    IEnumerable<XPathItem> objDiagResults = xpeDiag.Evaluate(context);
-                                        
                     if (xpeDiag.StaticType.TypeCode == XmlTypeCode.String ||
                         xpeDiag.StaticType.TypeCode.IsNumber())
                     {
-                        diagValues.Add(objDiagResults.First().Value);
+                        XPathItem objDiagResult = xpeDiag.EvaluateToItem(context);
+                        diagValues.Add(objDiagResult.Value);
                     }
                     else if (xpeDiag.StaticType.TypeCode == XmlTypeCode.Boolean)
                     {
-                        diagValues.Add(objDiagResults.First().Value.ToLower());
+                        XPathItem objDiagResult = xpeDiag.EvaluateToItem(context);
+                        diagValues.Add(objDiagResult.Value.ToLower());
                         break;
                     }
-                    else if (!objDiagResults.Any())
+                    else if (xpeDiag.StaticType.TypeCode == XmlTypeCode.Element ||
+                             xpeDiag.StaticType.TypeCode == XmlTypeCode.Node ||
+                             xpeDiag.StaticType.TypeCode == XmlTypeCode.Item)
                     {
-                        diagValues.Add(string.Empty);
-                    }
-                    else if (objDiagResults.First() is XPathNavigator)
-                    {
-                        foreach (XPathNavigator navResult in objDiagResults)
+                        IEnumerable<XPathItem> objDiagResults = xpeDiag.Evaluate(context);
+                        if (objDiagResults.Any())
                         {
-                            diagValues.Add(navResult.Value);
+                            foreach (XPathNavigator navResult in objDiagResults)
+                            {
+                                diagValues.Add(navResult.Value);
+                            }
                         }
-                        break;
+                        else
+                        {
+                            diagValues.Add(string.Empty);
+                        }
                     }
                     else
                     {
-                       diagValues.Add(string.Empty); 
+                        diagValues.Add(string.Empty);
                     }
                 }
 
