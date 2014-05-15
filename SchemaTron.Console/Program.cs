@@ -99,7 +99,7 @@ namespace SchemaTron.Console
             return data;
         }
 
-        private Validator CreateValidator(string baseUri, string phase, XDocument schema)
+        private Validator CreateValidator(string baseUriString, string phase, XDocument schema)
         {
             ValidatorSettings validatorSettings = new ValidatorSettings();
             if (!string.IsNullOrWhiteSpace(phase))
@@ -112,6 +112,8 @@ namespace SchemaTron.Console
                     "Creating the validator with phase '{0}'.",
                     validatorSettings.Phase));
             }
+
+            Uri baseUri = new Uri(baseUriString + "\\");            
             Validator validator = Validator.Create(schema, validatorSettings, baseUri);
             return validator;
         }

@@ -21,6 +21,7 @@
             Assert.True(results.IsValid);
 
             // #DEFAULT
+            xSch = Resources.Provider.LoadXmlDocument("phases_sch.xml");
             settings = new ValidatorSettings();
             settings.Phase = "#DEFAULT";
             validator = Validator.Create(xSch, settings);
@@ -29,6 +30,7 @@
             Assert.True(results.IsValid);
 
             // A
+            xSch = Resources.Provider.LoadXmlDocument("phases_sch.xml");
             settings = new ValidatorSettings();
             settings.Phase = "A";
             validator = Validator.Create(xSch, settings);
@@ -37,6 +39,7 @@
             Assert.True(results.IsValid);
 
             // B
+            xSch = Resources.Provider.LoadXmlDocument("phases_sch.xml");
             settings = new ValidatorSettings();
             settings.Phase = "B";
             validator = Validator.Create(xSch, settings);

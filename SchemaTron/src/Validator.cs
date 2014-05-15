@@ -55,22 +55,6 @@ namespace SchemaTron
         public XDocument MinSyntax { get; private set; }
 
         /// <summary>
-        /// Creates a new Validator instance with default validator settings
-        /// given a Schematron syntax schema.
-        /// </summary>
-        /// <param name="xSchema">ISO Schematron complex syntax schema.
-        /// Must not be null.</param>
-        /// <returns>A new Validator instance</returns>
-        /// <exception cref="System.ArgumentException"/>
-        /// <exception cref="System.ArgumentNullException"/>
-        /// <exception cref="SyntaxException"/>
-        /// <seealso cref="System.Xml.Linq.XDocument"/>
-        public static Validator Create(XDocument xSchema)
-        {
-            return Create(xSchema, null);
-        }
-
-        /// <summary>
         /// Creates a new Validator instance given a Schematron syntax schema and custom
         /// validator settings.
         /// </summary>
@@ -81,7 +65,7 @@ namespace SchemaTron
         /// <exception cref="System.ArgumentException"/>
         /// <exception cref="System.ArgumentNullException"/>
         /// <exception cref="SyntaxException"/>
-        public static Validator Create(XDocument xSchema, ValidatorSettings settings, string uriString = null)
+        public static Validator Create(XDocument xSchema, ValidatorSettings settings = null, Uri baseUri = null)
         {
             if (xSchema == null)
             {
@@ -105,36 +89,38 @@ namespace SchemaTron
 
             Validator validator = null;
 
-            // make a deep copy of the supplied XML 
-            XDocument xSchemaCopy = new XDocument(xSchema);
+            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
+            XDocument schemaXmlWithCurrentWorkaround = XDocument.Parse(xSchema.ToString().Replace("current()", "$current"));
 
+            string defaultNS = schemaXmlWithCurrentWorkaround.Root.GetDefaultNamespace().ToString();
+            if (defaultNS == Constants.OneDotFiveNamespace)
+            {
+                throw new ApplicationException("Schematron 1.5 is not supported.");
+            }
+            else if (defaultNS != Constants.ISONamespace)
+            {
+                throw new ApplicationException("This is not an ISO Schematron file.");
+            }
+            
             // resolve ISO namespace
             XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
             nsManager.AddNamespace("sch", Constants.ISONamespace);
 
-            settings.Phase = DetermineSchemaPhase(xSchemaCopy.Root, settings.Phase, nsManager);
+            settings.Phase = DetermineSchemaPhase(schemaXmlWithCurrentWorkaround.Root, settings.Phase, nsManager);
 
             // preprocessing - turn to minimal form
-            Preprocess(xSchemaCopy, nsManager, settings);
-
-            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
-            xSchemaCopy = XDocument.Parse(xSchemaCopy.ToString().Replace("current()", "$current"));            
+            Preprocess(schemaXmlWithCurrentWorkaround, nsManager, settings);
 
             // deserialization                           
-            Schema minimalizedSchema = SchemaDeserializer.Deserialize(xSchemaCopy, nsManager);
+            Schema minimalizedSchema = SchemaDeserializer.Deserialize(schemaXmlWithCurrentWorkaround, nsManager);
 
             // xpath preprocessing
-            Uri baseUri = null;
-            if (!String.IsNullOrEmpty(uriString))
-            {
-                baseUri = new Uri(uriString);
-            }
             CompileXPathExpressions(minimalizedSchema, baseUri);
 
             // create instance
             validator = new Validator();
             validator.schema = minimalizedSchema;
-            validator.MinSyntax = xSchemaCopy;
+            validator.MinSyntax = xSchema;
 
             return validator;
         }
@@ -218,9 +204,10 @@ namespace SchemaTron
             XDocument xPhaseA = Resources.Provider.SchemaPhaseA;
             Validator validatorPhaseA = Validator.Create(xPhaseA, valArgs);
 
-            XdmDocument schemaToTest = new XdmDocument(xSchema.CreateReader());            
+            // workaround bug in xmlprime which assumes NameTable is pre-populated within XDocument.CreateNavigator()
+            XPathNavigator schemaNavigator = new XdmDocument(xSchema.CreateReader()).CreateNavigator();
 
-            ValidatorResults resultsA = validatorPhaseA.Validate(schemaToTest.CreateNavigator(), true);
+            ValidatorResults resultsA = validatorPhaseA.Validate(schemaNavigator, true);
             if (!resultsA.IsValid)
             {
                 throw new SyntaxException(resultsA.GetMessages());
@@ -233,9 +220,9 @@ namespace SchemaTron
             Validator validatorPhaseB = Validator.Create(xPhaseB, valArgs);
 
             // ResolveInclusions could have modified xSchema -- update XdmDocument obj 
-            schemaToTest = new XdmDocument(xSchema.CreateReader());
+            schemaNavigator = new XdmDocument(xSchema.CreateReader()).CreateNavigator();
 
-            ValidatorResults resultsB = validatorPhaseB.Validate(schemaToTest.CreateNavigator(), true);
+            ValidatorResults resultsB = validatorPhaseB.Validate(schemaNavigator, true);
             if (!resultsB.IsValid)
             {
                 throw new SyntaxException(resultsB.GetMessages());
@@ -251,9 +238,9 @@ namespace SchemaTron
             Validator validatorPhaseC = Validator.Create(xPhaseC, valArgs);
 
             // last preprocessor stpes could have modified xSchema -- update XdmDocument obj 
-            schemaToTest = new XdmDocument(xSchema.CreateReader());
+            schemaNavigator = new XdmDocument(xSchema.CreateReader()).CreateNavigator();
 
-            ValidatorResults resultsC = validatorPhaseC.Validate(schemaToTest.CreateNavigator(), true);
+            ValidatorResults resultsC = validatorPhaseC.Validate(schemaNavigator, true);
             if (!resultsC.IsValid)
             {
                 throw new SyntaxException(resultsC.GetMessages());
