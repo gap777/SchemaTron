@@ -92,12 +92,12 @@ namespace SchemaTron
             // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
             XDocument schemaXmlWithCurrentWorkaround = XDocument.Parse(xSchema.ToString().Replace("current()", "$current"));
 
-            string defaultNS = schemaXmlWithCurrentWorkaround.Root.GetDefaultNamespace().ToString();
-            if (defaultNS == Constants.OneDotFiveNamespace)
+            string rootElementNS = schemaXmlWithCurrentWorkaround.Root.Name.Namespace.ToString();
+            if (rootElementNS == Constants.OneDotFiveNamespace)
             {
                 throw new ApplicationException("Schematron 1.5 is not supported.");
             }
-            else if (defaultNS != Constants.ISONamespace)
+            else if (rootElementNS != Constants.ISONamespace)
             {
                 throw new ApplicationException("This is not an ISO Schematron file.");
             }

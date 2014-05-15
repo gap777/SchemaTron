@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!-- <schema> root element is missing -->
-<pattern id="soapEnvelope">
+<pattern id="soapEnvelope" xmlns="http://purl.oclc.org/dsdl/schematron">
   <rule id="r1" context="/">
     <assert test="soap:Envelope"/>
   </rule>
