@@ -25,7 +25,7 @@
     /// </remarks>
     public class ValidatorTest
     {
-        private const string BASIC_SCHEMA = "basics_sch.xml";
+        private const string BASIC_SCHEMA = "basics_xpath_sch.xml";
         private const string BASIC_DOCUMENT = "basics_xml.xml";
         private const string PHASES_SCHEMA = "phases_sch.xml";
 

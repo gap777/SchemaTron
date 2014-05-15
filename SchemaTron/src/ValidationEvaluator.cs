@@ -11,8 +11,10 @@ using SchemaTron.SyntaxModel;
 
 using XmlPrime;
 
+
 namespace SchemaTron
 {
+    
     /// <summary>
     /// Implements the actual validation by a Schematron schema.
     /// </summary>
@@ -95,6 +97,8 @@ namespace SchemaTron
                 ContextItem = xNavigator,
                 DocumentSet = cachedDocuments
             };
+            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
+            settings.Parameters.Add(new XmlQualifiedName("current"), xNavigator);
 
             IEnumerable<XPathItem> contextSet = rule.CompiledContext.Evaluate(settings);
             foreach (XPathItem nextItem in contextSet)
@@ -145,6 +149,9 @@ namespace SchemaTron
                     ContextItem = context,
                     DocumentSet = cachedDocuments
                 };
+                // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
+                settings.Parameters.Add(new XmlQualifiedName("current"), context);
+
                 // resolve object result
                 bool isViolated = false;
                 if (assert.CompiledTest.StaticType.TypeCode.IsNumber())
@@ -219,9 +226,11 @@ namespace SchemaTron
                 List<string> diagValues = new List<string>();
                 DynamicContextSettings settings = new DynamicContextSettings
                 {
-                    ContextItem = xNavigator,
+                    ContextItem = context,
                     DocumentSet = cachedDocuments
                 };
+                // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
+                settings.Parameters.Add(new XmlQualifiedName("current"), context);
 
                 foreach (XPath xpeDiag in assert.CompiledDiagnostics)
                 {

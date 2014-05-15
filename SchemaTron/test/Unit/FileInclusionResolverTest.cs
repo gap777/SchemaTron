@@ -26,7 +26,7 @@
         public void ResolveExistingFile()
         {
             FileInclusionResolver resolver = new FileInclusionResolver();
-            Assert.DoesNotThrow(() => resolver.Resolve(@"..\..\Resources\basics_sch.xml"));
+            Assert.DoesNotThrow(() => resolver.Resolve(@"..\..\Resources\basics_xpath_sch.xml"));
         }
 
         [Fact]

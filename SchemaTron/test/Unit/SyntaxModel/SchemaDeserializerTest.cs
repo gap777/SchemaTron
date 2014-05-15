@@ -15,7 +15,7 @@
         // Note: SchemaDeserializer is internal and access to it
         // must have been allowed explicitly.
 
-        private const string BASIC_SCHEMA = "basics_sch.xml";
+        private const string BASIC_SCHEMA = "basics_xpath_sch.xml";
 
         [Fact]
         public void DeserializeNullSchema()

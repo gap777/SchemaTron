@@ -81,7 +81,7 @@ namespace SchemaTron
         /// <exception cref="System.ArgumentException"/>
         /// <exception cref="System.ArgumentNullException"/>
         /// <exception cref="SyntaxException"/>
-        public static Validator Create(XDocument xSchema, ValidatorSettings settings)
+        public static Validator Create(XDocument xSchema, ValidatorSettings settings, string uriString = null)
         {
             if (xSchema == null)
             {
@@ -117,11 +117,19 @@ namespace SchemaTron
             // preprocessing - turn to minimal form
             Preprocess(xSchemaCopy, nsManager, settings);
 
+            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
+            xSchemaCopy = XDocument.Parse(xSchemaCopy.ToString().Replace("current()", "$current"));            
+
             // deserialization                           
             Schema minimalizedSchema = SchemaDeserializer.Deserialize(xSchemaCopy, nsManager);
 
             // xpath preprocessing
-            CompileXPathExpressions(minimalizedSchema);
+            Uri baseUri = null;
+            if (!String.IsNullOrEmpty(uriString))
+            {
+                baseUri = new Uri(uriString);
+            }
+            CompileXPathExpressions(minimalizedSchema, baseUri);
 
             // create instance
             validator = new Validator();
@@ -266,7 +274,7 @@ namespace SchemaTron
         /// <exception cref="SyntaxException">Thrown if any of the expressions
         /// does not conform to XPath 1.0. The exceptions may contain multiple
         /// error messages.</exception>
-        private static void CompileXPathExpressions(Schema schema)
+        private static void CompileXPathExpressions(Schema schema, Uri baseUri)
         {
             List<string> messages = new List<string>();
 
@@ -283,6 +291,14 @@ namespace SchemaTron
             compilationSettings.ImportModule(XdmModule.ExtensionFunctions);
             compilationSettings.ImportModule(XdmModule.XQuery30Functions);
             compilationSettings.ImportModule(XdmModule.XPathMathFunctions);
+
+            if (baseUri != null)
+            {
+                compilationSettings.BaseURI = new AnyUri(baseUri);
+            }
+
+            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
+            compilationSettings.ImplicitVariableDeclaration = true;
 
             // compile XPath expressions
             foreach (Pattern pattern in schema.Patterns)

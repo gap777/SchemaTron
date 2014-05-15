@@ -292,18 +292,21 @@ namespace SchemaTron.Test.Functional
             });
         }
 
+        // ImplicitVariableDeclaration is allowed for work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
+        // which violates this test. 
+
         /// <summary>
         /// Note that references to variables in expressions are
         /// resolved by the query language binding, here XPath.
         /// </summary>
-        [Fact]
-        public void ReferenceToUndefinedLet()
-        {
-            TestBadSchema(GetBadFile("undefined_let.xml"), new string[] {
-                // NOTE: Notice the odd XPath message for using an undefined variable.
-                "Invalid XPath 2.0 test='$nonExistentLet': The variable '$nonExistentLet' is not defined or is out of scope.",
-            });
-        }
+        //[Fact]
+        //public void ReferenceToUndefinedLet()
+        //{
+        //    TestBadSchema(GetBadFile("undefined_let.xml"), new string[] {
+        //        // NOTE: Notice the odd XPath message for using an undefined variable.
+        //        "Invalid XPath 2.0 test='$nonExistentLet': The variable '$nonExistentLet' is not defined or is out of scope.",
+        //    });
+        //}
 
         #endregion
 

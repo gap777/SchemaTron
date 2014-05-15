@@ -29,7 +29,7 @@
       <assert id="a1" test="count(app:Item)>0"/>
       <assert id="a2" test="10>count(app:Item)"/>
     </rule>
-    <rule id="r3" context="/soap:Envelope/soap:Body/app:GetPrice/app:Item">
+    <rule id="r3" context="/soap:Envelope/soap:Body/app:GetPrice/app:Item[0]">
         <assert test="format-number(@id, '0')='1'"/>
     </rule>
     <rule id="r4" context="/soap:Envelope/soap:Body/app:GetPrice/app:Item/@id">

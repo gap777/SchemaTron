@@ -64,11 +64,11 @@ namespace SchemaTron.Console
             {
                 System.Console.WriteLine("Loading schema: " + schemaFileName);
             }
-            //string schemaFileDir = Path.GetDirectoryName(schemaFileName);
+            
             //Directory.SetCurrentDirectory(schemaFileDir);
             XDocument schema = LoadXDocument(schemaFileName);
-
-            Validator validator = CreateValidator(phase, schema);
+            string schemaFileDir = Path.GetDirectoryName(schemaFileName);
+            Validator validator = CreateValidator(schemaFileDir, phase, schema);
 
             foreach (var documentFileName in documentFileNames)
             {
@@ -99,7 +99,7 @@ namespace SchemaTron.Console
             return data;
         }
 
-        private Validator CreateValidator(string phase, XDocument schema)
+        private Validator CreateValidator(string baseUri, string phase, XDocument schema)
         {
             ValidatorSettings validatorSettings = new ValidatorSettings();
             if (!string.IsNullOrWhiteSpace(phase))
@@ -112,7 +112,7 @@ namespace SchemaTron.Console
                     "Creating the validator with phase '{0}'.",
                     validatorSettings.Phase));
             }
-            Validator validator = Validator.Create(schema, validatorSettings);
+            Validator validator = Validator.Create(schema, validatorSettings, baseUri);
             return validator;
         }
 
