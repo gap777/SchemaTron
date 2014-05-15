@@ -35,6 +35,12 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SchemaTron.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -77,6 +83,9 @@
     <EmbeddedResource Include="Resources\schema_phaseA.xml" />
     <EmbeddedResource Include="Resources\schema_phaseB.xml" />
     <EmbeddedResource Include="Resources\schema_phaseC.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SchemaTron.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

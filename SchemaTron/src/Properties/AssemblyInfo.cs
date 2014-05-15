@@ -37,4 +37,4 @@ using System.Runtime.InteropServices;
 
 
 // Explicitly allow unit test assembly to access internal classes and members.
-[assembly: InternalsVisibleToAttribute("SchemaTron.Test")]
+[assembly: InternalsVisibleToAttribute("SchemaTron.Test, PublicKey=0024000004800000940000000602000000240000525341310004000001000100e9eebbb46db672b6b3b8dec7cba12c5d859a5d673fb3bde587ccc982714941ce09112ea23317b0d90fccee0d5f2a99f9f388de988bf380705a7d8596fe1d59ff05489ff0e95dfeec5499ca2ed2c712723e86da0487f998a8c58bf3b24c04c168d5ca0fcaa47d05ddf3015953129211a7b872bce749e75dc0bcc03ad25bf6b2d4")]

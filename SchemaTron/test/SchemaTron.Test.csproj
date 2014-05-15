@@ -36,6 +36,12 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SchemaTron.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,8 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\XmlPrime.dll</HintPath>
     </Reference>
-    <Reference Include="xunit">
-      <HintPath>..\..\..\..\xunit\xunit.dll</HintPath>
+    <Reference Include="xunit, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\xunit\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\basics_xpath_sch.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SchemaTron.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
