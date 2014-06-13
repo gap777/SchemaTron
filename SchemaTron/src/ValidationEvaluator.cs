@@ -97,8 +97,6 @@ namespace SchemaTron
                 ContextItem = xNavigator,
                 DocumentSet = cachedDocuments
             };
-            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
-            settings.Parameters.Add(new XmlQualifiedName("current"), xNavigator);
 
             IEnumerable<XPathItem> contextSet = rule.CompiledContext.Evaluate(settings);
             foreach (XPathItem nextItem in contextSet)
@@ -149,8 +147,6 @@ namespace SchemaTron
                     ContextItem = context,
                     DocumentSet = cachedDocuments
                 };
-                // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
-                settings.Parameters.Add(new XmlQualifiedName("current"), context);
 
                 // resolve object result
                 bool isViolated = false;
@@ -229,8 +225,6 @@ namespace SchemaTron
                     ContextItem = context,
                     DocumentSet = cachedDocuments
                 };
-                // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
-                settings.Parameters.Add(new XmlQualifiedName("current"), context);
 
                 foreach (XPath xpeDiag in assert.CompiledDiagnostics)
                 {

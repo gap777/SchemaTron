@@ -89,10 +89,7 @@ namespace SchemaTron
 
             Validator validator = null;
 
-            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
-            XDocument schemaXmlWithCurrentWorkaround = XDocument.Parse(xSchema.ToString().Replace("current()", "$current"));
-
-            string rootElementNS = schemaXmlWithCurrentWorkaround.Root.Name.Namespace.ToString();
+            string rootElementNS = xSchema.Root.Name.Namespace.ToString();
             if (rootElementNS == Constants.OneDotFiveNamespace)
             {
                 throw new ApplicationException("Schematron 1.5 is not supported.");
@@ -106,13 +103,13 @@ namespace SchemaTron
             XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
             nsManager.AddNamespace("sch", Constants.ISONamespace);
 
-            settings.Phase = DetermineSchemaPhase(schemaXmlWithCurrentWorkaround.Root, settings.Phase, nsManager);
+            settings.Phase = DetermineSchemaPhase(xSchema.Root, settings.Phase, nsManager);
 
             // preprocessing - turn to minimal form
-            Preprocess(schemaXmlWithCurrentWorkaround, nsManager, settings);
+            Preprocess(xSchema, nsManager, settings);
 
             // deserialization                           
-            Schema minimalizedSchema = SchemaDeserializer.Deserialize(schemaXmlWithCurrentWorkaround, nsManager);
+            Schema minimalizedSchema = SchemaDeserializer.Deserialize(xSchema, nsManager);
 
             // xpath preprocessing
             CompileXPathExpressions(minimalizedSchema, baseUri);
@@ -283,9 +280,6 @@ namespace SchemaTron
             {
                 compilationSettings.BaseURI = new AnyUri(baseUri);
             }
-
-            // work-around for lack of support of xslt.current() within XmlPrime.XPath.Compile()
-            compilationSettings.ImplicitVariableDeclaration = true;
 
             // compile XPath expressions
             foreach (Pattern pattern in schema.Patterns)

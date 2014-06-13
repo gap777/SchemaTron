@@ -81,7 +81,9 @@
     <EmbeddedResource Include="Resources\absrules_sch.xml" />
     <EmbeddedResource Include="Resources\absrules_xml.xml" />
     <EmbeddedResource Include="Resources\absrules_xml_invalid.xml" />
-    <EmbeddedResource Include="Resources\basics_xml.xml" />
+    <EmbeddedResource Include="Resources\basics_xml.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\basics_xml_invalid.xml" />
     <EmbeddedResource Include="Resources\inclusions_sch.xml" />
     <EmbeddedResource Include="Resources\inclusions_sch_soap.xml" />
@@ -204,6 +206,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaTron.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tobeincluded.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

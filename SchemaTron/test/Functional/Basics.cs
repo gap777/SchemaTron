@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 using SchemaTron.SyntaxModel;
@@ -43,8 +45,9 @@ namespace SchemaTron.Test.Functional
         {
             XDocument xSch = Resources.Provider.LoadXmlDocument("basics_xpath2_sch.xml");
             XDocument xIn = Resources.Provider.LoadXmlDocument("basics_xml.xml");
-
-            Validator validator = Validator.Create(xSch);
+            
+            Uri baseUriForInclude = new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Resources"));
+            Validator validator = Validator.Create(xSch, baseUri: baseUriForInclude);
             ValidatorResults results = validator.Validate(xIn, true);
 
             Assert.True(results.IsValid);

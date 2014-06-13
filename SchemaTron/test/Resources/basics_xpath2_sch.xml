@@ -35,7 +35,9 @@
     <rule id="r4" context="/soap:Envelope/soap:Body/app:GetPrice/app:Item/@id">
       <assert id="a1" test="number(.)"/>
       <assert id="a2" test="not(.=../preceding-sibling::app:Item/@id)">Attribute <name/>='<value-of select="."/>' must be unique.</assert>
+      <assert id="a3" test="document('Resources/tobeincluded.xml')/systems/system[@group='idLookup']/code[@id=current()]">Invalid item ID -- must be in lookup table</assert>
     </rule>
+    
   </pattern>
 
 </schema>
