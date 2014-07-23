@@ -1,36 +1,26 @@
-﻿SchemaTron project
-===============
+### FAST SCHEMATRON FOR .NET
+Are you a .NET developer who needs to validate XML files against schematron specs? 
+Are you tired of having to carry around with you Saxon DLLs which wrap Java bytecode?
+Do you need greater performance than you can get launching a separate process each time you want to check an XML file against the schematron rules to which it must conform?
 
-SchemaTron is a native C# validator of ISO schematron implemented for the XRouter project
-(https://www.assembla.com/spaces/xrouter/wiki)
+Then this is the project for you!
 
-Source code
------------
+### XPATH2
+We started this with an excellent ISO schematron authored by the XRouter project in C# (Xpath1 only). 
+Then, we added in a lightweight .NET library for XPATH2 support. 
 
+### Authors and Contributors
+We are grateful to Bohumir Zámecník @bzamecnik and the XRouter team for the ISO Schematron to start with.
+Semyon Chertkov @semyon was gracious enough to support work for the XPath2 only branch. 
+ 
+### SOURCE CODE
 Source code of SchemaTron is available in Git repository hosted at Github.
 Browse code: https://github.com/gap777/SchemaTron
 
-Downloads
----------
-
-Binary installer packages, documentation and other files can be downloaded
-from: TBD
-
-Requirements
-------------
-
+### Requirements
 - Microsoft Windows 7 32-bit or 64-bit or Microsoft Windows Server 2008
 - Microsoft .NET Framework 4.0
-- Microsoft SQL Server 2008
-- access to an administrator account
 
-License
--------
+#### License
+SchemaTron is released under the MIT license. See the LICENSE file for details.
 
-SchemaTron is released under the MIT license. See the LICENSE and AUTHORS files
-for details.
-
-Acknowledgements
-----------------
-
-SchemaTron was extracted from the XRouter project.
