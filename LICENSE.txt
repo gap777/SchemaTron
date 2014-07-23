@@ -47,9 +47,7 @@ THE SOFTWARE.
 
 -----------------------------------------------------------------------------
 
-SchemaTron contains some open-source third-party code covered by other licenses:
-
-Lightweight XPath2 for .NET
+One branch of SchemaTron depends on Lightweight XPath2 for .NET
 
 	Copyright (C) Semyon A. Chertkov
 
@@ -73,3 +71,37 @@ Lightweight XPath2 for .NET
 	(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
 	(D) If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
 (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
+
+-----------------------------------------------------------------------------
+One branch of SchemaTron depends on XmlPrime:
+Non-commercial use
+XmlPrime is free for non-commercial use. If you are a non-commercial entity (eg. an individual) and you are not charging for your product, and the product has no other commercial purpose, then you can use the trial version of XmlPrime for free for as long as you like.
+Commercial use
+You may evaluate XmlPrime for as long as you like.
+To use XmlPrime in production, for commercial purposes or to distribute its components, you must purchase a commercial licence.
+All commercial licences qualify you for the following maintenance and support services:
+Unlimited access to technical support via e-mail
+Free upgrades to generally available bug fix and minor releases
+Free upgrades to major releases within 12 months of purchase
+The following commercial licences are available:
+Development licences
+Development licences are required to develop software using XmlPrime.
+Individual licence
+License XmlPrime for use on a single computer (server or workstation).
+Team licence
+License XmlPrime for use on up to five computers.
+Site licence
+License XmlPrime for use on any number of computers in a single building.
+Additional Deployment Licences
+A deployment license allows XmlPrime to be deployed to additional computers in order to use software developed using XmlPrime.
+Server licence
+License XmlPrime for deployment to an additional server.
+Redistribution licence
+License XmlPrime for royalty-free deployment.
+You may include the XmlPrime redistributable assembly in your end-user applications for a period of 12 months, without paying per server, per client or any other type of runtime fees.
+Commercial development using XmlPrime requires seperate development licences.
+The full licence terms are specified in the XmlPrime licence agreement.
+If you have any queries, please contact us.
+Purchasing XmlPrime
+XmlPrime licences can be purchased online at https://www.xmlprime.com/xmlprime/buy.htm
+
