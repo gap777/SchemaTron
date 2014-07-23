@@ -10,8 +10,7 @@ We started this with an excellent ISO schematron authored by the XRouter project
 
 ### Authors and Contributors
 We are grateful to Bohumir Zámecník @bzamecnik and the XRouter team for the ISO Schematron to start with.
-Semyon Chertkov @semyon was gracious enough to support work for the XPath2 only branch. 
- 
+
 ### SOURCE CODE
 Source code of SchemaTron is available in Git repository hosted at Github.
 Browse code: https://github.com/gap777/SchemaTron
@@ -21,5 +20,5 @@ Browse code: https://github.com/gap777/SchemaTron
 - Microsoft .NET Framework 4.0
 
 #### License
-SchemaTron is released under the MIT license. See the LICENSE file for details.
+SchemaTron is released under the MIT license. See the LICENSE file for details. Note that the XmlPrime library providing XPath2/XSLT2 support is free for non-commerical applications; otherwise it requires a commercial license.
 
