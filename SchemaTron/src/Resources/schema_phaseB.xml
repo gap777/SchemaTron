@@ -431,7 +431,7 @@
       </assert>
     </rule>
     <rule context="/ms:schema/ms:pattern/ms:rule/ms:extends/@rule">
-      <assert test=".=../../../ms:rule[@abstract='true']/@id">
+      <assert test=".=/ms:schema/ms:pattern/ms:rule[@abstract='true']/@id">
         The value of the '<name/>' attribute ('<value-of select="."/>') does not reference any abstract rule.
       </assert>
     </rule>

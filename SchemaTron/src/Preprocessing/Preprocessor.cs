@@ -216,7 +216,8 @@ namespace SchemaTron.Preprocessing
             {
                 // select instances
                 List<XElement> listInstances = new List<XElement>();
-                foreach (XElement xInstance in xSchema.XPathSelectElements("//sch:pattern[@is-a]", nsManager))
+                foreach (XElement xInstance in xSchema.XPathSelectElements("//sch:pattern[@is-a" +
+                                                                           "]", nsManager))
                 {
                     listInstances.Add(xInstance);
                 }

@@ -24,5 +24,11 @@
     <rule context="/values/e">
       <extends rule="empty-string"/>
     </rule>
-  </pattern>  
+  </pattern>
+  <pattern>
+    <rule context="values/i">
+      <extends rule="integer"/>
+      <assert test="number(.) lt 100"/>
+    </rule>
+  </pattern>
 </schema>
