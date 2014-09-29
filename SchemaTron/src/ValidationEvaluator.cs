@@ -289,11 +289,24 @@ namespace SchemaTron
                 {
                     // resolve namespace
                     XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
-                    nsManager.AddNamespace(current.Prefix, current.NamespaceURI);
+                    string prefix = current.Prefix;
+                    if (prefix.Length == 0)
+                    {
+                        // microsoft bug whereby unprefixed name is assumed to be in no namespace
+                        prefix = "unprefixed";
+                    }
+                    nsManager.AddNamespace(prefix, current.NamespaceURI);
 
                     // resolve name + position
-                    string name = current.Name;
-                    int position = 1 + ancestors.Current.Select(String.Format("preceding-sibling::{0}", name), nsManager).Count;
+                    string name = current.LocalName;
+                    int position = 1 + 
+                        ancestors.Current.Select(
+                            String.Format("preceding-sibling::{0}:{1}", 
+                                          prefix, 
+                                          name), 
+                            nsManager)
+                        .Count;
+
                     steps.Push(String.Format("{0}[{1}]", name, position));
                 }
             }
