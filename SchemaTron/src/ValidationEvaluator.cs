@@ -163,6 +163,7 @@ namespace SchemaTron
                 }
                 else if (assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Element ||
                          assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Node ||
+                         assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Item ||
                          assert.CompiledTest.StaticType.TypeCode == XmlTypeCode.Attribute)
                 {
                     IEnumerable<XPathItem> objResults = assert.CompiledTest.Evaluate(settings);
@@ -170,7 +171,7 @@ namespace SchemaTron
                 }
                 else
                 {
-                    throw new InvalidOperationException(String.Format("'{0}'.", assert.Test));
+                    throw new InvalidOperationException(String.Format("Assertion {0} results in unsupported output type of {1}", assert.Id, assert.CompiledTest.StaticType.TypeCode));
                 }
 
                 // results
