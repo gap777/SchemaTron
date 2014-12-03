@@ -18,7 +18,7 @@ namespace XRouter.SchemaTron.Resources
                 {
                     if (schemaPhaseA == null)
                     {
-                        schemaPhaseA = LoadXmlDocument("SchemaTron.Resources.schema_phaseA.xml");
+                        schemaPhaseA = LoadXmlDocument("XRouter.SchemaTron.Resources.schema_phaseA.xml");
                     }
                 }
 
@@ -34,7 +34,7 @@ namespace XRouter.SchemaTron.Resources
                 {
                     if (schemaPhaseB == null)
                     {
-                        schemaPhaseB = LoadXmlDocument("SchemaTron.Resources.schema_phaseB.xml");
+                        schemaPhaseB = LoadXmlDocument("XRouter.SchemaTron.Resources.schema_phaseB.xml");
                     }
                 }
 
@@ -50,7 +50,7 @@ namespace XRouter.SchemaTron.Resources
                 {
                     if (schemaPhaseC == null)
                     {
-                        schemaPhaseC = LoadXmlDocument("SchemaTron.Resources.schema_phaseC.xml");
+                        schemaPhaseC = LoadXmlDocument("XRouter.SchemaTron.Resources.schema_phaseC.xml");
                     }
                 }
 

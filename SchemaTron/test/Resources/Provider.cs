@@ -10,7 +10,7 @@
         public static XDocument LoadXmlDocument(string name)
         {
             Assembly currentAssembly = Assembly.GetExecutingAssembly();
-            Stream stream = currentAssembly.GetManifestResourceStream(String.Format("SchemaTron.Test.Resources.{0}", name));
+            Stream stream = currentAssembly.GetManifestResourceStream(String.Format("XRouter.SchemaTron.Test.Resources.{0}", name));
             XDocument xDoc = XDocument.Load(stream, LoadOptions.SetLineInfo);
             return xDoc;
         }
