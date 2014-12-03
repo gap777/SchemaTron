@@ -1,5 +1,5 @@
 ﻿
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// Contains detailed information related to a violated assertion

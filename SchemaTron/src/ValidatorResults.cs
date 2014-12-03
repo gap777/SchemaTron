@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// Detailed results of a validation.

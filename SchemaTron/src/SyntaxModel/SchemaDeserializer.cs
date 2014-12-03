@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace SchemaTron.SyntaxModel
+namespace XRouter.SchemaTron.SyntaxModel
 {
     /// <summary>
     /// Provides a facility for converting a schema from the XML form

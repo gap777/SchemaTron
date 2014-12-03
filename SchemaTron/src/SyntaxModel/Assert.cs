@@ -1,7 +1,7 @@
 ﻿using System.Xml.XPath;
 using XmlPrime;
 
-namespace SchemaTron.SyntaxModel
+namespace XRouter.SchemaTron.SyntaxModel
 {
     /// <summary>
     /// Represents an assertion.

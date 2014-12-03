@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace SchemaTron.Preprocessing
+namespace XRouter.SchemaTron.Preprocessing
 {
     internal sealed class Diagnostic
     {

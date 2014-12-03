@@ -1,5 +1,5 @@
 ﻿
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// Validator settings which affect its behavior.

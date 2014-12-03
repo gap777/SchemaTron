@@ -19,11 +19,11 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using SchemaTron.Preprocessing;
-using SchemaTron.SyntaxModel;
+using XRouter.SchemaTron.Preprocessing;
+using XRouter.SchemaTron.SyntaxModel;
 using XmlPrime;
 
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// A native ISO Schematron validator using XPath 1.0 query language binding.

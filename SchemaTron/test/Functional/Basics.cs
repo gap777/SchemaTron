@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
-using SchemaTron.SyntaxModel;
+using XRouter.SchemaTron.SyntaxModel;
 using XmlPrime;
 
-namespace SchemaTron.Test.Functional
+namespace XRouter.SchemaTron.Test.Functional
 {
     using System.Xml.Linq;
     using SchemaTron;

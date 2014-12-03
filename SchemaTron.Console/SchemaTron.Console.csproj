@@ -8,8 +8,8 @@
     <ProjectGuid>{031F5040-2F1D-44D6-88AE-0B013D22B59B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SchemaTron.Console</RootNamespace>
-    <AssemblyName>SchemaTron.Console</AssemblyName>
+    <RootNamespace>XRouter.SchemaTron.Console</RootNamespace>
+    <AssemblyName>XRouterSchemaTronConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

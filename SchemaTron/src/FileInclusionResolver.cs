@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// A default implementation of resolving included elements.

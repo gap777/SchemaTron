@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SchemaTron.SyntaxModel
+namespace XRouter.SchemaTron.SyntaxModel
 {
     /// <summary>
     /// Represents a Schematron schema.

@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// Represents a resolver for delivering included Schematron elements.

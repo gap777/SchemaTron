@@ -5,9 +5,9 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-using SchemaTron;
+using XRouter.SchemaTron;
 
-namespace SchemaTron.Console
+namespace XRouter.SchemaTron.Console
 {
     /// <summary>
     /// Console front-end of the SchemaTron validator.

@@ -1,5 +1,5 @@
 ﻿
-namespace SchemaTron.SyntaxModel
+namespace XRouter.SchemaTron.SyntaxModel
 {
     /// <summary>
     /// Represents a namespace.

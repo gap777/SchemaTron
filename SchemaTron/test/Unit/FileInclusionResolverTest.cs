@@ -1,10 +1,10 @@
-﻿namespace SchemaTron.Test
+﻿namespace XRouter.SchemaTron.Test
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using SchemaTron;
+    using XRouter.SchemaTron;
     using Xunit;
     using System.IO;
     using System.IO.Compression;

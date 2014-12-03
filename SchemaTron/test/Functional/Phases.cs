@@ -1,4 +1,4 @@
-﻿namespace SchemaTron.Test.Functional
+﻿namespace XRouter.SchemaTron.Test.Functional
 {
     using System.Xml.Linq;
     using SchemaTron;

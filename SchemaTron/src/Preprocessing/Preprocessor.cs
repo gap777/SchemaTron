@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace SchemaTron.Preprocessing
+namespace XRouter.SchemaTron.Preprocessing
 {
     /// <summary>
     /// Preprocessor provides transformation steps which help to resolve the

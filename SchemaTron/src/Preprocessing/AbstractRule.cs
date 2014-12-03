@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace SchemaTron.Preprocessing
+namespace XRouter.SchemaTron.Preprocessing
 {
     /// <summary>
     /// Represents an abstract rule.

@@ -1,5 +1,5 @@
 ﻿
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// Contains some project-wide constants.

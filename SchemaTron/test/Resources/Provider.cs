@@ -1,4 +1,4 @@
-﻿namespace SchemaTron.Test.Resources
+﻿namespace XRouter.SchemaTron.Test.Resources
 {
     using System;
     using System.IO;

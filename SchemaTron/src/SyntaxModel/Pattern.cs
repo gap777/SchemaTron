@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SchemaTron.SyntaxModel
+namespace XRouter.SchemaTron.SyntaxModel
 {
     /// <summary>
     /// Represents a pattern.

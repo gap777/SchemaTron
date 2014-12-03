@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     /// <summary>
     /// Represents one or more schema syntax errors and contains user

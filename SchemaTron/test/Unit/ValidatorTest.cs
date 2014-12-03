@@ -1,4 +1,4 @@
-﻿namespace SchemaTron.Test
+﻿namespace XRouter.SchemaTron.Test
 {
     using System;
     using System.Collections.Generic;

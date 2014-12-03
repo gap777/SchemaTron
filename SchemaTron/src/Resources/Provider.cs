@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace SchemaTron.Resources
+namespace XRouter.SchemaTron.Resources
 {
     internal static class Provider
     {

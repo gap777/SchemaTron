@@ -1,4 +1,4 @@
-﻿namespace SchemaTron.Preprocessing.Test
+﻿namespace XRouter.SchemaTron.Preprocessing.Test
 {
     using System;
     using System.Collections.Generic;

@@ -7,12 +7,12 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.XPath;
-using SchemaTron.SyntaxModel;
+using XRouter.SchemaTron.SyntaxModel;
 
 using XmlPrime;
 
 
-namespace SchemaTron
+namespace XRouter.SchemaTron
 {
     
     /// <summary>

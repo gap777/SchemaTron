@@ -1,5 +1,5 @@
 ﻿
-namespace SchemaTron.Preprocessing
+namespace XRouter.SchemaTron.Preprocessing
 {
     /// <summary>
     /// Represents a parameter reference.

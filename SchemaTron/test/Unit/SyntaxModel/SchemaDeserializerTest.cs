@@ -1,4 +1,4 @@
-﻿namespace SchemaTron.SyntaxModel.Test
+﻿namespace XRouter.SchemaTron.SyntaxModel.Test
 {
     using System;
     using System.Collections.Generic;

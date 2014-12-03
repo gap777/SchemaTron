@@ -8,8 +8,8 @@
     <ProjectGuid>{1DD52070-30C2-432A-89D5-484432A9B8E4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SchemaTron.Test</RootNamespace>
-    <AssemblyName>SchemaTron.Test</AssemblyName>
+    <RootNamespace>XRouter.SchemaTron.Test</RootNamespace>
+    <AssemblyName>XrouterSchemaTron.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
