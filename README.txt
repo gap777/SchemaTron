@@ -6,7 +6,7 @@ Do you need greater performance than you can get launching a separate process ea
 Then this is the project for you!
 
 ### XPATH2/XSLT2
-We started this with an excellent ISO schematron authored by the XRouter project in C# (Xpath1 only). Then, we added in the leading .NET library for XPATH2/XSLT2 support -- XmlPrime. Finally, it's being used daily to validate HITSP C32 v2.5 documents against the host of schematron files governing CDA XML. 
+We started this with an excellent ISO schematron authored by the XRouter project in C# (Xpath1 only). Then, we added in the leading .NET library for XPATH2/XSLT2 support -- XmlPrime. Finally, it's being used daily to validate HL7 CCDA and HITSP C32 v2.5 documents against their schematron files. 
 
 ### Authors and Contributors
 We are grateful to Bohumir Zámecník @bzamecnik and the XRouter team for the ISO Schematron to start with.
