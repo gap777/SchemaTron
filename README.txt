@@ -1,4 +1,6 @@
-﻿### FAST SCHEMATRON FOR .NET
+# WARNING: THIS PROJECT IS NO LONGER BEING MAINTAINED
+
+### FAST SCHEMATRON FOR .NET
 Are you a .NET developer who needs to validate XML files against schematron specs? 
 Are you tired of having to carry around with you Saxon DLLs which wrap Java bytecode?
 Do you need greater performance than you can get launching a separate process each time you want to check an XML file against the schematron rules to which it must conform?
