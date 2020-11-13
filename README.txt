@@ -1,3 +1,5 @@
+# WARNING: THIS PROJECT IS NO LONGER BEING MAINTAINED
+
 ### FAST SCHEMATRON FOR .NET
 Are you a .NET developer who needs to validate XML files against schematron specs? 
 Are you tired of having to carry around with you Saxon DLLs which wrap Java bytecode?
